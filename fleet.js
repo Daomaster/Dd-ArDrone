@@ -22,8 +22,7 @@ var keys = {
     console.log('drone1 Takeoff!');
     drone1.takeoff();
     drone1.stop();
-    drone1.on('navdata', console.log);
-    drone1.after(3000, function()
+    drone1.after(5000, function()
     {
      console.log('drone2 Takeoff!');
      drone2.takeoff();
@@ -46,9 +45,15 @@ var keys = {
     drone1.takeoff();
     drone1.stop();
     drone1.on('navdata', function(d) {
-    
-});
-    
+  if (d.demo) {
+    if (d.demo.altitude) {
+      altitude = d.demo.altitude;
+      altitude = altitude * 100;
+      altitude.toFixed(1);
+      console.log("ALTITUDE " + altitude + " cm");
+    		}
+		}
+	});
   },
 
   'w': function(){
@@ -68,6 +73,17 @@ var keys = {
     drone2.config('general:navdata_demo', 'FALSE');
     drone2.takeoff();
     drone2.stop();                //Stop to hover, after every command
+
+    drone2.on('navdata', function(d) {
+  if (d.demo) {
+    if (d.demo.altitude) {
+      altitude = d.demo.altitude;
+      altitude = altitude * 100;
+      altitude.toFixed(1);
+      console.log("ALTITUDE2 " + altitude + " cm");
+    		}
+		}
+	});
     
   },
 
@@ -105,7 +121,7 @@ var climb = function(drone, altitude)
   drone.stop();
    drone.on('navdata.demo.altitudeMeters', console.log);    //gets the altitude data
 
-   var n = altitudeMeters.toFixed(1);           //set precision to integer value
+   var n = altitudeMeters.toFixed(2);           //set precision to floating value 2 decimal places
 
    if(n == altitude)
    {  console.log('Reached altitude of 200'); }

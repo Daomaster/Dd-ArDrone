@@ -4,13 +4,14 @@ var arDrone = require('ar-drone');    //Drone library called "Node drone"
 var drone1 = arDrone.createClient({ip: '192.168.1.200'}); //Drone 1 and ip addresses
 var drone2 = arDrone.createClient({ip: '192.168.1.202'}); //Drone 2 and ip addresses
 
+var altitude = 0; //Initial for the global altitude
+
 var fleet = [drone1,drone2];    //Array of the two drones
-//var altitude = 0;
-// write function get altitude
 
 fleet.forEach(function(drone)
 {
 	drone.ftrim();                 //Flat trim. Calibrates to the ground level
+  drone.config('general:navdata_demo', 'TRUE');
 });
 
 keypress(process.stdin);        //reads in a key press
@@ -21,7 +22,7 @@ var keys = {
     console.log('drone1 Takeoff!');
     drone1.takeoff();
     drone1.stop();
-    drone1.on('navdata.demo.altitudeMeters', console.log);
+    drone1.on('navdata', console.log);
     drone1.after(3000, function()
     {
      console.log('drone2 Takeoff!');
@@ -44,7 +45,9 @@ var keys = {
 
     drone1.takeoff();
     drone1.stop();
-
+    drone1.on('navdata', function(d) {
+    
+});
     
   },
 
@@ -62,7 +65,7 @@ var keys = {
 
  'k': function(){
     console.log('drone2 takeoff!');
-
+    drone2.config('general:navdata_demo', 'FALSE');
     drone2.takeoff();
     drone2.stop();                //Stop to hover, after every command
     

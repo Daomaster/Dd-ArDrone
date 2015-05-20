@@ -1,19 +1,23 @@
-"use strict";
-
-var Gpio = require('onoff').Gpio,  // Constructor function for Gpio objects.
-  button = new Gpio(17, 'in', 'both'); // Export GPIO #4 as an interrupt
-                                      // generating input.
-
-console.log('Please press the button on GPIO #17...');
-
-// The callback passed to watch will be called when the button on GPIO #4 is
-// pressed. 
-button.watch(function (err, value) {
-  if (err) {
-    throw err;
+// button is attaced to pin 17, led to 18
+var GPIO = require('onoff').Gpio,
+    led = new GPIO(18, 'out'),
+    button = new GPIO(17, 'in', 'both');
+ 
+// define the callback function
+function light(err, state) {
+  
+  // check the state of the button
+  // 1 == pressed, 0 == not pressed
+  if(state == 1) {
+    // turn LED on
+    led.writeSync(1);
+  } else {
+    // turn LED off
+    led.writeSync(0);
   }
-
-  console.log('Button pressed!, its value was ' + value);
-
-  button.unexport(); // Unexport GPIO and free resources
-});
+  
+}
+ 
+// pass the callback function to the
+// as the first argument to watch()
+button.watch(light);

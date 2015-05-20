@@ -23,22 +23,22 @@ async.parallel([
 function read() {
     async.series([
         function(callback) {
-            delayedRead(7, callback);
+            delayedRead(23, callback);
         },
         function(callback) {
-            delayedRead(15, callback);
+            delayedRead(17, callback);
         },
         function(callback) {
-            delayedRead(16, callback);
+            delayedRead(18, callback);
         },
         function(callback) {
-            delayedRead(7, callback);
+            delayedRead(23, callback);
         },
         function(callback) {
-            delayedRead(15, callback);
+            delayedRead(17, callback);
         },
         function(callback) {
-            delayedRead(16, callback);
+            delayedRead(18, callback);
         },
     ], function(err, results) {
         console.log('Read complete, pause then unexport pins');

@@ -9,11 +9,10 @@ console.log('Please press the button on GPIO #17...');
 // The callback passed to watch will be called when the button on GPIO #4 is
 // pressed. 
 button.watch(function (err, value) {
-  if (err) {
-    throw err;
-  }
+ if(value === 0){
 
   console.log('Button pressed!, its value was ' + value);
 
   button.unexport(); // Unexport GPIO and free resources
-});
+	};
+)

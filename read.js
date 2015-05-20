@@ -7,13 +7,19 @@ var GPIO = require('onoff').Gpio,
 
  
 button1.watch(function(err, value){
-	console.log("Pin 17 is " + value);
+	if (value === 0) {
+	console.log("Drone 1 goes up!");
+	};
 });
 
 button2.watch(function(err, value){
-	console.log("Pin 18 is " + value);
+	if (value === 0) {
+	console.log("Drone 2 goes up!");
+	};
 });
 
 button3.watch(function(err, value){
-	console.log("Pin 23 is " + value);
+	if (value === 0) {
+	console.log("Drone land goes up!");
+	};
 });

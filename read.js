@@ -8,6 +8,7 @@ function light(err, state) {
   
   // check the state of the button
   // 1 == pressed, 0 == not pressed
+  console.log("State is " + state);
   if(state == 1) {
     // turn LED on
     led.writeSync(1);

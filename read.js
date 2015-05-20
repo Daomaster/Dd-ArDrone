@@ -1,6 +1,6 @@
 "use strict";
 
-var Gpio = require('../onoff').Gpio,  // Constructor function for Gpio objects.
+var Gpio = require('onoff').Gpio,  // Constructor function for Gpio objects.
   button = new Gpio(17, 'in', 'both'); // Export GPIO #4 as an interrupt
                                       // generating input.
 

@@ -1,7 +1,6 @@
-var gpio = require('rpi-gpio');
+var gpio = require("pi-gpio");
 
-gpio.on('change', function(channel, value) {
-    console.log('Channel ' + channel + ' value is now ' + value);
+gpio.read(16, function(err, value) {
+    if(err) throw err;
+    console.log(value); // The current state of the pin
 });
-gpio.setup(11, gpio.DIR_IN);
-gpio.setup(12, gpio.DIR_IN);

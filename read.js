@@ -1,24 +1,19 @@
 // button is attaced to pin 17, led to 18
 var GPIO = require('onoff').Gpio,
     led = new GPIO(18, 'out'),
-    button = new GPIO(17, 'in', 'both');
+    button1 = new GPIO(17, 'in', 'both');
+    button2 = new GPIO(18, 'in', 'both');
+	button3 = new GPIO(23, 'in', 'both');
+
  
-// define the callback function
-function light(err, state) {
-  
-  // check the state of the button
-  // 1 == pressed, 0 == not pressed
-  console.log("State is " + state);
-  if(state == 1) {
-    // turn LED on
-    led.writeSync(1);
-  } else {
-    // turn LED off
-    led.writeSync(0);
-  }
-  
-}
- 
-// pass the callback function to the
-// as the first argument to watch()
-button.watch(light);
+button1.watch(function(err, value){
+	console.log("Pin 17 is " + value);
+});
+
+button2.watch(function(err, value){
+	console.log("Pin 18 is " + value);
+});
+
+button3.watch(function(err, value){
+	console.log("Pin 23 is " + value);
+});

@@ -5,6 +5,7 @@ var drone1 = arDrone.createClient({ip: '192.168.1.200'}); //Drone 1 and ip addre
 var drone2 = arDrone.createClient({ip: '192.168.1.202'}); //Drone 2 and ip addresses
 
 var altitude = 0; //Initial for the global altitude
+var testalt = .1;	//Altitude variable for climb
 
 var fleet = [drone1,drone2];    //Array of the two drones
 
@@ -44,16 +45,9 @@ var keys = {
 
     drone1.takeoff();
     drone1.stop();
-    drone1.on('navdata', function(d) {
-  if (d.demo) {
-    if (d.demo.altitude) {
-      altitude = d.demo.altitude;
-      altitude = altitude * 100;
-      altitude.toFixed(1);
-      console.log("ALTITUDE " + altitude + " cm");
-    		}
-		}
-	});
+
+    getaltitude(drone1);
+
   },
 
   'w': function(){
@@ -68,22 +62,27 @@ var keys = {
     
   },
 
+ 't': function(){
+	console.log("Takeoff!");
+	drone1.takeoff();
+	drone1.stop();
+	drone1.after(3000, function()      //500 miliseconds
+    {
+    	
+    	console.log("Testing climb function");
+  		climb(this);
+    });
+
+  	
+  },
+
  'k': function(){
     console.log('drone2 takeoff!');
     drone2.config('general:navdata_demo', 'FALSE');
     drone2.takeoff();
     drone2.stop();                //Stop to hover, after every command
 
-    drone2.on('navdata', function(d) {
-  if (d.demo) {
-    if (d.demo.altitude) {
-      altitude = d.demo.altitude;
-      altitude = altitude * 100;
-      altitude.toFixed(1);
-      console.log("ALTITUDE2 " + altitude + " cm");
-    		}
-		}
-	});
+    getaltitude(drone2);
     
   },
 
@@ -97,9 +96,9 @@ var keys = {
 
     	this.stop();
     });
-  }
+  },
+	}
   
-}
 
 var quit = function(){
   console.log('Quitting');
@@ -114,29 +113,40 @@ var quit = function(){
 
 }
 
-var climb = function(drone, altitude)
+var climb = function(drone)
   {
-  console.log('Takeoff!');
-  drone.takeoff();
-  drone.stop();
-   drone.on('navdata.demo.altitudeMeters', console.log);    //gets the altitude data
+  	var n = getaltitude(drone);
 
-   var n = altitudeMeters.toFixed(2);           //set precision to floating value 2 decimal places
-
-   if(n == altitude)
-   {  console.log('Reached altitude of 200'); }
-   else if (n > altitude)
-   {
+   if(n == testalt)
+   {  console.log("Reached altitude of 100cm"); }
+   else if (n > testalt)
+   { console.log("Higher than 100cm...Lowering")
      drone.down(.2);     //lowers altitude with 20% speed (To take into consideration of gravity)
     drone.stop();
-    climb();
+    climb(drone);
    }
    else     //n < altitude
-   {
+   {console.log("Lower than 100cm...Rising")
     drone.up(.4);       //raises altitude with 40% speed
     drone.stop();
-    climb();
+    climb(drone);
    }
+  }
+
+ var getaltitude = function(drone)
+  {
+
+   drone.on('navdata', function(d) {
+  	if (d.demo) {
+    if (d.demo.altitude) {
+      altitude = d.demo.altitude;
+      altitude = altitude * 100;
+      altitude.toFixed(1);
+      console.log("ALTITUDE " + altitude + " cm");
+    		}
+		}
+	});
+
   };
 
 process.stdin.on('keypress', function (ch, key) {

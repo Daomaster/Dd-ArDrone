@@ -28,12 +28,15 @@ var keys = {
      console.log('drone2 Takeoff!');
      drone2.takeoff();
      drone2.stop();
+     //May still need to alter things here to allow for stability
+     //in the individual drone's take off and hover state.
     });
-    //Need to work on getting them stable and not interfere with eachother's space
+   
   },
 
   'l': function(){
     console.log('Land!');
+
     fleet.forEach(function(drone){
       drone.stop();
       drone.land();
@@ -56,17 +59,17 @@ var keys = {
     drone1.up(0.8);
       
     drone1.after(500, function(){
-
     	this.stop();
     });
     
   },
 
- 't': function(){
+ 't': function(){               //The button to test the climb function
 	console.log("Takeoff!");
 	drone1.takeoff();
+
 	drone1.stop();
-	drone1.after(3000, function()      //500 miliseconds
+	drone1.after(3000, function()      //2 seconds
     {
     	
     	console.log("Testing climb function");
@@ -118,18 +121,29 @@ var climb = function(drone)
   	var n = getaltitude(drone);
 
    if(n == testalt)
-   {  console.log("Reached altitude of 100cm"); }
+   {
+
+    drone.after(500, function()      //500 miliseconds aka half second
+    {
+
+      this.stop();
+    });
+
+    console.log("Reached altitude of 100cm"); 
+   }
    else if (n > testalt)
-   { console.log("Higher than 100cm...Lowering")
+   {
+     console.log("Higher than 100cm...Lowering")
      drone.down(.2);     //lowers altitude with 20% speed (To take into consideration of gravity)
-    drone.stop();
-    climb(drone);
+  //  drone.stop();
+     climb(drone);
    }
    else     //n < altitude
-   {console.log("Lower than 100cm...Rising")
-    drone.up(.4);       //raises altitude with 40% speed
-    drone.stop();
-    climb(drone);
+   {
+     console.log("Lower than 100cm...Rising")
+     drone.up(.4);       //raises altitude with 40% speed
+   //  drone.stop();
+     climb(drone);
    }
   }
 

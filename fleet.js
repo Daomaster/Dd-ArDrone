@@ -81,7 +81,7 @@ var keys = {
 
  'k': function(){
     console.log('drone2 takeoff!');
-    drone2.config('general:navdata_demo', 'FALSE');
+    //drone2.config('general:navdata_demo', 'FALSE');
     drone2.takeoff();
     drone2.stop();                //Stop to hover, after every command
 

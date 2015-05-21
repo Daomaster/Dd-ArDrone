@@ -1,10 +1,7 @@
-//
-//
 // button 1 is GPIO17
 // button 2 is GPIO18
 // button 3 is GPIO23
 var GPIO = require('onoff').Gpio,
-    led = new GPIO(18, 'out'),
     button1 = new GPIO(17, 'in', 'both');
     button2 = new GPIO(18, 'in', 'both');
 	button3 = new GPIO(23, 'in', 'both');
@@ -39,6 +36,7 @@ fleet.forEach(function(drone)
 //Sychronized function so paralle 
 
 button1.watch(function(err, value){
+// Drone 1 up function
 	if (value === 0) {
 	console.log("Drone 1 goes up!");
 	//Drone go up in 80% speed for .5 sec
@@ -50,6 +48,7 @@ button1.watch(function(err, value){
 });
 
 button2.watch(function(err, value){
+// Drone 2 up function
 	if (value === 0) {
 	console.log("Drone 2 goes up!");
 	//Drone go up in 80% speed for .5 sec
@@ -61,6 +60,7 @@ button2.watch(function(err, value){
 });
 
 button3.watch(function(err, value){
+// Fleet land function
 	if (value === 0) {
 	console.log("Fleet landing!");
 	//The whole fleet will land after button3 is pressed

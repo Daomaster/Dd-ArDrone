@@ -5,7 +5,7 @@ var drone1 = arDrone.createClient({ip: '192.168.1.200'}); //Drone 1 and ip addre
 var drone2 = arDrone.createClient({ip: '192.168.1.202'}); //Drone 2 and ip addresses
 
 var altitude = 0; //Initial for the global altitude
-var testalt = .1;	//Altitude variable for climb
+var testalt = 100;	//Altitude variable for climb 100cm
 
 var fleet = [drone1,drone2];    //Array of the two drones
 
@@ -118,14 +118,15 @@ var quit = function(){
 
 var climb = function(drone)
   {
-  	var n = getaltitude(drone);
+  	var n = 0;
 
-   if(n == testalt)
+    n = getaltitude(drone);
+
+   if(n === testalt)
    {
-
-    drone.after(500, function()      //500 miliseconds aka half second
+    //n === testalt : The drone has reached the desired altitude
+    drone.after(500, function()      //500 msec/.5 sec
     {
-
       this.stop();
     });
 
@@ -134,15 +135,15 @@ var climb = function(drone)
    else if (n > testalt)
    {
      console.log("Higher than 100cm...Lowering")
-     drone.down(.2);     //lowers altitude with 20% speed (To take into consideration of gravity)
-  //  drone.stop();
+     drone.down(.2);     //lowers altitude:20% speed (Because of gravity)
+  //  drone.stop();   //Commented out to see if this affects anything.
      climb(drone);
    }
    else     //n < altitude
    {
      console.log("Lower than 100cm...Rising")
      drone.up(.4);       //raises altitude with 40% speed
-   //  drone.stop();
+   //  drone.stop();     //Commented out to see if this affects anything.
      climb(drone);
    }
   }
@@ -155,7 +156,7 @@ var climb = function(drone)
     if (d.demo.altitude) {
       altitude = d.demo.altitude;
       altitude = altitude * 100;
-      altitude.toFixed(1);
+      altitude = Math.round(altitude);
       console.log("ALTITUDE " + altitude + " cm");
     		}
 		}
@@ -171,5 +172,3 @@ process.stdin.on('keypress', function (ch, key) {
 
 process.stdin.setRawMode(true);     //Refresh and keep true.
 process.stdin.resume();             //Continues
-
-

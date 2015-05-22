@@ -121,18 +121,11 @@ var quit = function(){
 var climb = function(drone)
   {
 
-    drone.on('navdata', function(d) {
-    if (d.demo) {
-    if (d.demo.altitude) {
-     var altitude = d.demo.altitude;
-      altitude = altitude * 100;
-      altitude = Math.round(altitude);
-      console.log("ALTITUDE " + altitude + " cm");
-        }
-    }
-  });
+   var n=0;
+   n= getaltitude(drone);
+   console.log(n + "cm");
 
-   if(altitude === testalt)
+   if(n === testalt)
    {
     //n === testalt : The drone has reached the desired altitude
     
@@ -140,7 +133,7 @@ var climb = function(drone)
 
     console.log("Reached altitude of 100cm"); 
    }
-   else if (altitude > testalt)
+   else if (n > testalt)
    {
      drone.down(.4);     //lowers altitude:20% speed (Because of gravity)
     //  drone.stop();   //Commented out to see if this affects anything.
@@ -166,8 +159,8 @@ var climb = function(drone)
    }
   }
 
- /*
- var getaltitude = function(drone,altitude)
+ 
+ var getaltitude = function(drone)
   {
 
    drone.on('navdata', function(d) {
@@ -176,13 +169,13 @@ var climb = function(drone)
       altitude = d.demo.altitude;
       altitude = altitude * 100;
       altitude = Math.round(altitude);
-      console.log("ALTITUDE " + altitude + " cm");
+      //console.log("ALTITUDE " + altitude + " cm");
     		}
 		}
 	});
-
+   return altitude;
   };
-  */
+  
 process.stdin.on('keypress', function (ch, key) {
   if(key && keys[key.name])                           //Finds the matching keyname and executes the function, inside the key.name array
     { keys[key.name](); }

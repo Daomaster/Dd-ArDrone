@@ -121,7 +121,8 @@ var climb = function(drone)
   	var n = 0;
 
     n = getaltitude(drone);
-
+    console.log(altitude + "cm");
+    
    if(n === testalt)
    {
     //n === testalt : The drone has reached the desired altitude
@@ -157,9 +158,11 @@ var climb = function(drone)
       altitude = d.demo.altitude;
       altitude = altitude * 100;
       altitude = Math.round(altitude);
-      console.log("ALTITUDE " + altitude + " cm");
+      //console.log("ALTITUDE " + altitude + " cm");
     		}
 		}
+            return altitude;
+
 	});
 
   };

@@ -33,6 +33,7 @@ var keys = {
      //May still need to alter things here to allow for stability
      //in the individual drone's take off and hover state.
     });
+
    
   },
 
@@ -59,9 +60,10 @@ var keys = {
     console.log('drone1 up!');
 
     drone1.up(0.8);
-      
-    drone1.after(500, function(){
+    drone2.stop();
+    drone1.after(300, function(){
     	this.stop();
+      console.log("Stop up 1"); 
     });
     
   },
@@ -92,14 +94,14 @@ var keys = {
   },
 
   'i': function(){
-    console.log('drone2 up!');
-
+  console.log('drone2 up!');
 	drone2.up(0.8);              //Speed 80%
-      
-    drone2.after(500, function()      //500 miliseconds
+  drone1.stop();    
+    drone2.after(300, function()      //500 miliseconds
     {
 
     	this.stop();
+      console.log("Stop up 2");
     });
   },
 	}

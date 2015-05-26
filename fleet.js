@@ -25,16 +25,11 @@ var keys = {
     console.log('drone1 Takeoff!');
     drone1.takeoff();
     drone1.stop();
-    drone1.after(5000, function()
-    {
-     console.log('drone2 Takeoff!');
-     drone2.takeoff();
-     drone2.stop();
-     //May still need to alter things here to allow for stability
-     //in the individual drone's take off and hover state.
-    });
-
-   
+    setTimeout(function(){ 
+                          console.log("drone2 Takeoff");
+                          drone2.takeoff();
+                          drone2.stop();
+                         }, 3000);   
   },
 
   'l': function(){
@@ -98,9 +93,7 @@ var keys = {
                           drone2.stop();
                           console.log("Stop: 2")
                          }, 300);   
-  },
 	}
-  
 
 var quit = function(){
   console.log('Quitting');
@@ -112,7 +105,6 @@ var quit = function(){
       drone.land();
       drone._udpControl.close();
     });
-
 }
 
 var climb = function(drone)
@@ -180,14 +172,14 @@ process.stdin.on('keypress', function (ch, key) {
     { keys[key.name](); }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
   //Make the drone hover every 2 seconds when no command.
-  /*
+  
   fleet.forEach(function(drone){
       drone.after(2000,function(){
         console.log("After command!")
         drone.stop();
       });
   });
-  */
+  
 });
 
 process.stdin.setRawMode(true);     //Refresh and keep true.

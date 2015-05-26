@@ -59,13 +59,11 @@ var keys = {
   'w': function(){
     console.log('drone1 up!');
 
-    drone1.up(0.8);
-    drone2.stop();
-    drone1.after(300, function(){
-    	this.stop();
-      console.log("Stop up 1"); 
-    });
-    
+    drone1.up(1);
+    setTimeout(function(){ 
+                          drone1.stop();
+                          console.log("Stop: 1")
+                         }, 300);   
   },
 
  't': function(){               //The button to test the climb function
@@ -95,14 +93,11 @@ var keys = {
 
   'i': function(){
   console.log('drone2 up!');
-	drone2.up(0.8);              //Speed 80%
-  drone1.stop();    
-    drone2.after(300, function()      //500 miliseconds
-    {
-
-    	this.stop();
-      console.log("Stop up 2");
-    });
+	drone2.up(1);              //Speed 80%   
+    setTimeout(function(){ 
+                          drone2.stop();
+                          console.log("Stop: 2")
+                         }, 300);   
   },
 	}
   
@@ -178,11 +173,21 @@ var climb = function(drone)
 	});
    return altitude;
   };
-  
+   
+ 
 process.stdin.on('keypress', function (ch, key) {
+ //Stop the whole fleet when there is no command
+  fleet.forEach(function(drone){
+      drone.stop();
+    });
   if(key && keys[key.name])                           //Finds the matching keyname and executes the function, inside the key.name array
     { keys[key.name](); }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
+  fleet.forEach(function(drone){
+      drone.after(100,function(){
+        console.log("After command!")
+      });
+  });
 });
 
 process.stdin.setRawMode(true);     //Refresh and keep true.

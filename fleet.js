@@ -176,18 +176,18 @@ var climb = function(drone)
    
  
 process.stdin.on('keypress', function (ch, key) {
- //Stop the whole fleet when there is no command
-  fleet.forEach(function(drone){
-      drone.stop();
-    });
   if(key && keys[key.name])                           //Finds the matching keyname and executes the function, inside the key.name array
     { keys[key.name](); }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
+  //Make the drone hover every 2 seconds when no command.
+  /*
   fleet.forEach(function(drone){
-      drone.after(100,function(){
+      drone.after(2000,function(){
         console.log("After command!")
+        drone.stop();
       });
   });
+  */
 });
 
 process.stdin.setRawMode(true);     //Refresh and keep true.

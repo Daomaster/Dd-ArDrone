@@ -41,9 +41,10 @@ button1.watch(function(err, value){
 	console.log("Drone 1 goes up!");
 	//Drone go up in 80% speed for .5 sec
 	drone1.up(0.8);  
-    drone1.after(500, function(){
-    	this.stop();
-    	});
+    setTimeout(function(){ 
+                          drone1.stop();
+                          console.log("Stop: 1")
+                         }, 300);   
 	};
 });
 
@@ -53,9 +54,10 @@ button2.watch(function(err, value){
 	console.log("Drone 2 goes up!");
 	//Drone go up in 80% speed for .5 sec
 	drone2.up(0.8);  
-    drone2.after(500, function(){
-    	this.stop();
-    	});
+    setTimeout(function(){ 
+                          drone2.stop();
+                          console.log("Stop: 2")
+                         }, 300);   
 	};
 });
 

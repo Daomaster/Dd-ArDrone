@@ -8,6 +8,10 @@ var GPIO = require('onoff').Gpio,
 //Import the node.js lib
 var arDrone = require('ar-drone');
 
+//Global varible for drones
+var onAir1 = False;
+var onAir2 = False;
+
 //Drone 1 is probe 200   
 var drone1 = arDrone.createClient({ip: '192.168.1.200'}); 
 //Drone 2 is probe 202
@@ -21,16 +25,25 @@ fleet.forEach(function(drone)
   drone.config('general:navdata_demo', 'TRUE');
 });
 
-//Drone 1 takes off and 5 secs later Drone 2 take off
+//Drone 1 takes off and 4 secs later Drone 2 take off
 	console.log('drone1 Takeoff!');
     drone1.takeoff();
     drone1.stop();
-    drone1.after(5000, function()
+    drone1.after(4000, function()
 	    {
+	     //drone1 is in air
+	     onAir1 = True;
+	     console.log("Drone 1 is in air");
 	     console.log('drone2 Takeoff!');
 	     drone2.takeoff();
 	     drone2.stop();
 	    });
+    drone2.after(1000,function()
+    	{
+    		//drone2 is in air
+    		onAir2 = True;
+	     console.log("Drone 1 is in air");
+    	});
 
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
@@ -39,26 +52,38 @@ button1.watch(function(err, value){
 // Drone 1 up function
 	if (value === 0) {
 	console.log("Drone 1 goes up!");
-	//Drone go up in 80% speed for .5 sec
+	//Drone go up in 80% speed for .3 sec
 	drone1.up(0.8);  
     setTimeout(function(){ 
                           drone1.stop();
-                          console.log("Stop: 1")
+                          console.log("Stop: 1");
                          }, 300);   
-	};
+	}
+	//If D1 is in air and no command hold position
+	else if (onAir1 == True){
+		console.log("No command for drone1 so hover.");
+		drone1.stop();
+	}
+
 });
 
 button2.watch(function(err, value){
 // Drone 2 up function
 	if (value === 0) {
 	console.log("Drone 2 goes up!");
-	//Drone go up in 80% speed for .5 sec
+	//Drone go up in 80% speed for .3 sec
 	drone2.up(0.8);  
     setTimeout(function(){ 
                           drone2.stop();
-                          console.log("Stop: 2")
+                          console.log("Stop: 2");
                          }, 300);   
-	};
+	}
+	//If D2 is in air and no command hold position
+	else if (onAir2 == True){
+		console.log("No command for drone2 so hover.");
+		drone2.stop();
+	}
+	
 });
 
 button3.watch(function(err, value){
@@ -70,5 +95,5 @@ button3.watch(function(err, value){
       drone.stop();
       drone.land();
     	});
-	};
+	}
 });

@@ -1,77 +1,49 @@
 var keypress = require('keypress');   //Library that reads input
 var arDrone = require('ar-drone');    //Drone library called "Node drone"
 
-var drone1 = arDrone.createClient({ip: '192.168.1.200'}); //Drone 1 and ip addresses
-var drone2 = arDrone.createClient({ip: '192.168.1.202'}); //Drone 2 and ip addresses
+var drone = arDrone.createClient({ip: '192.168.1.202'}); //Drone  and ip addresses
 
-var altitude = 0; //Initial for the global altitude
+var altitude;
 var testalt = 100;	//Altitude variable for climb 100cm
-
-var fleet = [drone1,drone2];    //Array of the two drones
-
-
-
-fleet.forEach(function(drone)
-{
-	drone.ftrim();                 //Flat trim. Calibrates to the ground level
-  drone.config('general:navdata_demo', 'TRUE');
-});
 
 keypress(process.stdin);        //reads in a key press
 
 var keys = {
-  'space': function(){
-
-    console.log('drone1 Takeoff!');
-    drone1.takeoff();
-    drone1.stop();
-    drone1.after(5000, function()
-    {
-     console.log('drone2 Takeoff!');
-     drone2.takeoff();
-     drone2.stop();
-     //May still need to alter things here to allow for stability
-     //in the individual drone's take off and hover state.
-    });
-
-   
-  },
 
   'l': function(){
     console.log('Land!');
-
-    fleet.forEach(function(drone){
-      drone.stop();
-      drone.land();
-    });
+    drone.stop();
+    drone.land();
   },
 
   's': function(){
     console.log('drone1 takeoff!');
-
-    drone1.takeoff();
-    drone1.stop();
-
-    getaltitude(drone1);
+    drone.takeoff();
+    drone.stop();
 
   },
 
   'w': function(){
-    console.log('drone1 up!');
-
-    drone1.up(1);
+    console.log('drone up!');
+    drone.up(1);
     setTimeout(function(){ 
-                          drone1.stop();
+                          drone.stop();
                           console.log("Stop: 1");
-                         }, 300);   
+                         }, 300);  
+  	
+  },
+
+  'q': function(){
+	console.log("drone stop!");
+  	drone.stop();
   },
 
  't': function(){               //The button to test the climb function
 	console.log("Takeoff!");
-	drone1.takeoff();
+	drone.takeoff();
 
-	drone1.stop();
-	drone1.after(3000, function()      //2 seconds
+	drone.stop();
+	drone.after(3000, function()      //3 seconds
     {
     	
     	console.log("Testing climb function");
@@ -81,37 +53,16 @@ var keys = {
   	
   },
 
- 'k': function(){
-    console.log('drone2 takeoff!');
-    //drone2.config('general:navdata_demo', 'FALSE');
-    drone2.takeoff();
-    drone2.stop();                //Stop to hover, after every command
-
-    getaltitude(drone2);
-    
-  },
-
-  'i': function(){
-  console.log('drone2 up!');
-	drone2.up(1);              //Speed 80%   
-    setTimeout(function(){ 
-                          drone2.stop();
-                          console.log("Stop: 2");
-                         }, 300);   
-  },
 	}
   
 
 var quit = function(){
   console.log('Quitting');
   process.stdin.pause();
-
-  fleet.forEach(function(drone){
-      drone.stop();
-      console.log('Landing');
-      drone.land();
-      drone._udpControl.close();
-    });
+   drone.stop();
+   console.log('Landing');
+   drone.land();
+   drone._udpControl.close();
 
 }
 
@@ -165,27 +116,42 @@ var climb = function(drone)
       altitude = d.demo.altitude;
       altitude = altitude * 100;
       altitude = Math.round(altitude);
-      //console.log("ALTITUDE " + altitude + " cm");
     		}
 		}
 	});
    return altitude;
   };
+
+var print_altitude = function(drone)
+  {
+
+   drone.on('navdata', function(d) {
+  	if (d.demo) {
+    if (d.demo.altitude) {
+      altitude = d.demo.altitude;
+      altitude = altitude * 100;
+      altitude = Math.round(altitude);
+      console.log(altitude);
+    		}
+		}
+	});
+
+  };
+
+
    
  
 process.stdin.on('keypress', function (ch, key) {
   if(key && keys[key.name])                           //Finds the matching keyname and executes the function, inside the key.name array
     { keys[key.name](); }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
-  //Make the drone hover every 2 seconds when no command.
-  /*
-  fleet.forEach(function(drone){
-      drone.after(2000,function(){
-        console.log("After command!")
-        drone.stop();
-      });
-  });
-  */
+  else{
+  	console.log("After command!");
+  }
+  
+        console.log("After command 1!");
+        //console.log(getaltitude(drone));
+        //drone.stop();
 });
 
 process.stdin.setRawMode(true);     //Refresh and keep true.

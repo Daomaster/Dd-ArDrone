@@ -4,7 +4,7 @@ var arDrone = require('ar-drone');    //Drone library called "Node drone"
 var drone = arDrone.createClient({ip: '192.168.1.202'}); //Drone  and ip addresses
 
 var altitude;
-var testalt = 100;	//Altitude variable for climb 100cm
+var testalt = 75;	//Altitude variable for climb 100cm
 
 keypress(process.stdin);        //reads in a key press
 
@@ -20,6 +20,26 @@ var keys = {
     console.log('drone1 takeoff!');
     drone.takeoff();
     drone.stop();
+
+  },
+
+  'r':function(){
+  	console.log('drone rotate!');
+  	drone.clockwise(.8);
+  	setTimeout(function(){ 
+                          drone.stop();
+                          console.log("Stop: 1");
+                         }, 3000); 
+
+  },
+
+   'q':function(){
+  	console.log('drone rotate!');
+  	drone.counterClockwise(.8);
+  	setTimeout(function(){ 
+                          drone.stop();
+                          console.log("Stop: 1");
+                         }, 3000); 
 
   },
 
@@ -48,6 +68,7 @@ var keys = {
     	
     	console.log("Testing climb function");
   		climb(this);
+  		drone.stop();
     });
 
   	
@@ -82,7 +103,7 @@ var climb = function(drone)
    }
    else if (n > testalt)
    {
-     drone.down(.1);     //lowers altitude:20% speed (Because of gravity)
+     drone.down(.4);     //lowers altitude:20% speed (Because of gravity)
     //  drone.stop();   //Commented out to see if this affects anything.
     setTimeout(function(){ 
                           console.log("Higher than 100cm...lowering")
@@ -94,7 +115,7 @@ var climb = function(drone)
    }
    else     //n < altitude
    {
-     drone.up(.4);       //raises altitude with 40% speed
+     drone.up(.8);       //raises altitude with 40% speed
     //  drone.stop();     //Commented out to see if this affects anything.
      setTimeout(function(){ 
                           console.log("Lower than 100cm...Rising")
@@ -145,13 +166,7 @@ process.stdin.on('keypress', function (ch, key) {
   if(key && keys[key.name])                           //Finds the matching keyname and executes the function, inside the key.name array
     { keys[key.name](); }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
-  else{
-  	console.log("After command!");
-  }
-  
-        console.log("After command 1!");
-        //console.log(getaltitude(drone));
-        //drone.stop();
+     
 });
 
 process.stdin.setRawMode(true);     //Refresh and keep true.

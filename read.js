@@ -9,8 +9,8 @@ var GPIO = require('onoff').Gpio,
 var arDrone = require('ar-drone');
 
 //Global varible for drones
-var onAir1 = False;
-var onAir2 = False;
+var onAir1 = false;
+var onAir2 = false;
 
 //Drone 1 is probe 200   
 var drone1 = arDrone.createClient({ip: '192.168.1.200'}); 
@@ -32,7 +32,7 @@ fleet.forEach(function(drone)
     drone1.after(4000, function()
 	    {
 	     //drone1 is in air
-	     onAir1 = True;
+	     onAir1 = true;
 	     console.log("Drone 1 is in air");
 	     console.log('drone2 Takeoff!');
 	     drone2.takeoff();
@@ -41,7 +41,7 @@ fleet.forEach(function(drone)
     drone2.after(1000,function()
     	{
     		//drone2 is in air
-    		onAir2 = True;
+    		onAir2 = true;
 	     console.log("Drone 1 is in air");
     	});
 
@@ -60,7 +60,7 @@ button1.watch(function(err, value){
                          }, 300);   
 	}
 	//If D1 is in air and no command hold position
-	else if (onAir1 == True){
+	else if (onAir1 == true){
 		console.log("No command for drone1 so hover.");
 		drone1.stop();
 	}
@@ -79,7 +79,7 @@ button2.watch(function(err, value){
                          }, 300);   
 	}
 	//If D2 is in air and no command hold position
-	else if (onAir2 == True){
+	else if (onAir2 == true){
 		console.log("No command for drone2 so hover.");
 		drone2.stop();
 	}

@@ -1,23 +1,32 @@
-var keypress = require('keypress');   //Library that reads input
-var arDrone = require('ar-drone');    //Drone library called "Node drone"
+// Libary set-up
+var keypress = require('keypress');   
+var arDrone = require('ar-drone');    
 
+// Drone initialization
 var drone = arDrone.createClient({ip: '192.168.1.200'}); //Drone  and ip addresses
 
+// Global varibles
 var altitude;
 var a = 100;
 var b = 120;	//Altitude variable for climb 100cm. Find and figure out how to get it to 100cm with a 100 tst alt
 var c = 140;
+var speed = .6;		//Speed variable
+var stop = false;
 
-keypress(process.stdin);        //reads in a key press
+// Read in the keys
+keypress(process.stdin);        
 
+// Declare key modules
 var keys = {
 
+  // l for land
   'l': function(){
     console.log('Land!');
     drone.stop();
     drone.land();
   },
 
+  // s for drone1 take off
   's': function(){
     console.log('drone1 takeoff!');
     drone.takeoff();
@@ -25,6 +34,7 @@ var keys = {
 
   },
 
+  // w for drone1 go up
   'w': function(){
     console.log('drone up!');
     drone.up(1);
@@ -35,36 +45,43 @@ var keys = {
   	
   },
 
+  // q for stop the drone
   'q': function(){
 	console.log("drone stop!");
   	drone.stop();
   },
 
- 'a': function(){               
+  // o for line 1
+  'o': function(){               
 	
     	console.log("Testing climb function 100");
-  		climb(drone,a);
+  		stop = true;
+  		climb(drone,a,speed);
   		drone.stop();
     },
- 'b': function(){               
+  
+  // k for line 2  
+  'k': function(){               
 	
     	console.log("Testing climb function 120");
-  		climb(drone,b);
+  		stop = true;
+  		climb(drone,b,speed);
   		drone.stop();
     },
- 'c': function(){               
+  
+  // m for line 3
+  'm': function(){               
 	
     	console.log("Testing climb function 140");
-  		climb(drone,c);
+  		stop = true;
+  		climb(drone,c,speed);
   		drone.stop();
     }
 
   	
   }
 
-	
-  
-
+  // when exit the program 
 var quit = function(){
   console.log('Quitting');
   process.stdin.pause();
@@ -75,48 +92,90 @@ var quit = function(){
 
 }
 
-var climb = function(drone,target)
+// reach to the target altitude	
+var climb = function(drone,target,speed)
   {
-
-   var n= getaltitude(drone);
-   console.log(n + "cm");
-
-   if(n === target)
-   {
-    //n === testalt : The drone has reached the desired altitude
-    
-      drone.stop();
-
-    console.log("Reached altitude of 100cm"); 
+   stop = false;
+   var current=getaltitude(drone);
+   console.log(current + "cm");
+   
+ while(!stop){
+   
+   if(current === target)
+   {    
+    drone.stop();
+    console.log("Reached altitude of " + target); 
+    stop = true;
    }
-   else if (n > target)
+   else if (current > target)
    {
-     drone.down(.5);     //lowers altitude:20% speed (Because of gravity)
-    //  drone.stop();   //Commented out to see if this affects anything.
+     drone.down(speed);     //lowers altitude:20% speed (Because of gravity)
     setTimeout(function(){ 
-                          console.log("Higher than "+target+"cm...lowering")
-                          console.log("After: "+ n);
-                          drone.stop();
-                          climb(drone,target);  
-                         }, 200); 
+      console.log("Higher than "+target+"cm...lowering")
+      console.log("After: "+ current);
+      drone.stop();
+      if(Math.abs(target-current)>=15 && Math.abs(target-current)<=20)
+      {
+      	speed=.4;
+      }
+      else if(Math.abs(target-current)>=10 && Math.abs(target-current)<15)
+      {
+      	speed =.3;
+      }
+      else if(Math.abs(target-current)<10)
+      {
+      	speed=.2;
+      }
+      climb(drone,target,speed);  
+     }, 100); 
 
    }
    else     //n < altitude
    {
-     drone.up(.5);       //raises altitude with 40% speed
-    //  drone.stop();     //Commented out to see if this affects anything.
-     setTimeout(function(){ 
-                          console.log("Lower than "+target+"cm...uping")
-                          console.log("After: "+ n);
-                          drone.stop();
-                          climb(drone,target);  
-                         }, 200); //100 or 200 maybe, will need to test to figure out
-    
-
+     drone.up(speed);       //raises altitude with 40% speed
+	  setTimeout(function(){ 
+		  console.log("Lower than "+target+"cm...uping")
+		  console.log("After: "+ current);
+		  drone.stop();
+		  if(Math.abs(target-current)>=15 && Math.abs(target-current)<=20)
+		  {
+		  	speed=.4;
+		  }
+		  else if(Math.abs(target-current)>=10 && Math.abs(target-current)<15)
+		  {
+		  	speed =.3;
+		  }
+		  else if(Math.abs(target-current)<10)
+		  {
+		  	speed=.2;
+		  }
+		  console.log("Speed :"+ speed);
+		  climb(drone,target, speed);  
+	 }, 100); //100 or 200 maybe, will need to test to figure out
    }
-  }
+ }
+ 	stop = false;
+}
 
- 
+ var newSpeed = function(target,current)
+ {
+	if(Math.abs(target-current)>=15 && Math.abs(target-current)<=20)
+      {
+      	speed=.4;
+      	return speed;
+      }
+      else if(Math.abs(target-current)>=10 && Math.abs(target-current)<15)
+      {
+      	speed =.3;
+      	return speed;
+      }
+      else if(Math.abs(target-current)<10)
+      {
+      	speed=.2;
+      	return speed;
+      }
+                      };
+
  var getaltitude = function(drone)
   {
 
@@ -134,7 +193,6 @@ var climb = function(drone,target)
 
 var print_altitude = function(drone)
   {
-
    drone.on('navdata', function(d) {
   	if (d.demo) {
     if (d.demo.altitude) {
@@ -143,12 +201,10 @@ var print_altitude = function(drone)
       altitude = Math.round(altitude);
       setTimeout(function(){ 
                           console.log(altitude); 
-                         }, 200);
-      
+                           }, 200);     
     		}
 		}
 	});
-
   };
 
 

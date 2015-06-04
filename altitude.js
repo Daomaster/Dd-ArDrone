@@ -56,8 +56,11 @@ var keys = {
 	
     	console.log("Testing climb function 100");
   		stop = true;
-  		climb(drone,a,speed);
-  		drone.stop();
+  		setTimeout(function(){
+			stop=false;
+			climb(drone,a,speed);
+			drone.stop();
+  		},100);
     },
   
   // k for line 2  
@@ -65,8 +68,12 @@ var keys = {
 	
     	console.log("Testing climb function 120");
   		stop = true;
-  		climb(drone,b,speed);
-  		drone.stop();
+  		setTimeout(function(){
+  			stop=false;
+  		  	climb(drone,b,speed);
+  			drone.stop();
+  		},100);
+  		
     },
   
   // m for line 3
@@ -74,8 +81,11 @@ var keys = {
 	
     	console.log("Testing climb function 140");
   		stop = true;
-  		climb(drone,c,speed);
-  		drone.stop();
+  		setTimeout(function(){
+  			stop=false;
+  			climb(drone,c,speed);
+  			drone.stop();
+  		},100);
     }
 
   	
@@ -95,17 +105,16 @@ var quit = function(){
 // reach to the target altitude	
 var climb = function(drone,target,speed)
   {
-   stop = false;
    var current=getaltitude(drone);
    console.log(current + "cm");
    
- while(!stop){
+ if(stop === false){
    
    if(current === target)
    {    
     drone.stop();
     console.log("Reached altitude of " + target); 
-    stop = true;
+    return;
    }
    else if (current > target)
    {
@@ -154,7 +163,9 @@ var climb = function(drone,target,speed)
 	 }, 100); //100 or 200 maybe, will need to test to figure out
    }
  }
- 	stop = false;
+else{
+	return;
+}
 }
 
  var newSpeed = function(target,current)

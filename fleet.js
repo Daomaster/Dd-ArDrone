@@ -94,6 +94,7 @@ var keys = {
                           console.log("Stop: 2");
                          }, 300);   
 	}
+}
 
 var quit = function(){
   console.log('Quitting');

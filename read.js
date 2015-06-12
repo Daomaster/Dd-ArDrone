@@ -5,6 +5,9 @@ var GPIO = require('onoff').Gpio,
     button1 = new GPIO(17, 'in', 'both');
     button2 = new GPIO(18, 'in', 'both');
 	button3 = new GPIO(23, 'in', 'both');
+	led1 = new GPIO(22,'out');
+	led2 = new GPIO(24,'out');
+	led3 = new GPIO(27,'out');
 //Import the node.js lib
 var arDrone = require('ar-drone');
 
@@ -25,12 +28,16 @@ drone1.config('general:navdata_demo', 'TRUE');
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
 
-button1.watch(function(err, value){
+button1.watch(function(err, value){// for the pin 17 (up)
 // Drone 1 up function
+	led1.writeSync(value);
 	if (value === 0) {
 	console.log("Drone 1 goes up!");
 	//Drone go up in 80% speed for .3 sec
 	drone1.up(0.8);  
+
+
+
     setTimeout(function(){ 
                           drone1.stop();
                           console.log("Stop: 1");
@@ -46,6 +53,7 @@ button1.watch(function(err, value){
 
 button2.watch(function(err, value){
 // Drone 2 up function
+	led2.writeSync(value);
 	if (value === 0) {
 	console.log("Drone 2 goes up!");
 	//Drone go up in 80% speed for .3 sec
@@ -65,6 +73,7 @@ button2.watch(function(err, value){
 
 button3.watch(function(err, value){
 // Fleet land function
+	led3.writeSync(value);
 	if (value === 0) {
 	console.log("Fleet landing!");
 	//The whole fleet will land after button3 is pressed

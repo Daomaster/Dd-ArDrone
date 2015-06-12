@@ -30,8 +30,8 @@ drone1.config('general:navdata_demo', 'TRUE');
 
 button1.watch(function(err, value){// for the pin 17 (up)
 // Drone 1 up function
-	led1.writeSync(!value);
 	if (value === 0) {
+	led1.writeSync(value);
 	console.log("Drone 1 goes up!");
 	//Drone go up in 80% speed for .3 sec
 	drone1.up(0.8);  
@@ -53,8 +53,9 @@ button1.watch(function(err, value){// for the pin 17 (up)
 
 button2.watch(function(err, value){
 // Drone 2 up function
-	led2.writeSync(!value);
+
 	if (value === 0) {
+	led2.writeSync(value);
 	console.log("Drone 2 goes up!");
 	//Drone go up in 80% speed for .3 sec
 	drone1.up(0.8);  
@@ -73,8 +74,9 @@ button2.watch(function(err, value){
 
 button3.watch(function(err, value){
 // Fleet land function
-	led3.writeSync(!value);
+	
 	if (value === 0) {
+	led3.writeSync(value);
 	console.log("Fleet landing!");
 	//The whole fleet will land after button3 is pressed
       drone1.stop();

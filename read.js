@@ -13,10 +13,7 @@ var onAir1 = false;
 var onAir2 = false;
 
 //Drone 1 is probe 200   
-var drone1 = arDrone.createClient({ip: '192.168.1.200'}); 
-//Drone 2 is probe 202
-//Fleet is the array of the drone
-var fleet = [drone1,drone2];   
+var drone1 = arDrone.createClient({ip: '192.168.1.200'});   
 //Before it take of flast trim the ground first
 drone1.ftrim();                 
 drone1.config('general:navdata_demo', 'TRUE');

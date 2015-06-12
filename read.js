@@ -11,10 +11,6 @@ var GPIO = require('onoff').Gpio,
 //Import the node.js lib
 var arDrone = require('ar-drone');
 
-//Global varible for drones
-var onAir1 = false;
-var onAir2 = false;
-
 //Drone 1 is probe 200   
 var drone1 = arDrone.createClient({ip: '192.168.1.200'});   
 //Before it take of flast trim the ground first
@@ -43,11 +39,10 @@ button1.watch(function(err, value){// for the pin 17 (up)
                           console.log("Stop: 1");
                          }, 300);   
 	}
-	//If D1 is in air and no command hold position
-	else if (onAir1 == true){
-		console.log("No command for drone1 so hover.");
-		drone1.stop();
+	else{
+	led1.writeSync(0);
 	}
+	
 
 });
 
@@ -64,11 +59,9 @@ button2.watch(function(err, value){
                           console.log("Stop: 2");
                          }, 300);   
 	}
-	//If D2 is in air and no command hold position
-	else if (onAir2 == true){
-		console.log("No command for drone2 so hover.");
-		drone1.stop();
-	}
+	else{
+	led2.writeSync(0);
+	}	
 	
 });
 
@@ -81,5 +74,8 @@ button3.watch(function(err, value){
 	//The whole fleet will land after button3 is pressed
       drone1.stop();
       drone1.land();
+	}
+	else{
+	led3.writeSync(0);
 	}
 });

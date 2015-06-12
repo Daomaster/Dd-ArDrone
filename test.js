@@ -173,10 +173,10 @@ var climb = function(drone,target)
    
  if(stop === false){
    
-   if(current === target)
+   if(current === target || (current > target-3 && current < target+3))
    {    
     drone.stop();
-    console.log("Reached altitude of " + target); 
+    console.log("Reached altitude of " + target);  
     return;
    }
    
@@ -184,20 +184,20 @@ var climb = function(drone,target)
    {
      // Speed and timeout is determined by the shift
      drone.down(newSpeed(shift));     
-    setTimeout(function(){ 
+     setTimeout(function(){ 
       console.log("Higher than "+target+"cm...lowering")
       console.log("After: "+ current);
-      drone.stop();
+      drone.stop(); 
       climb(drone,target);  
      }, newTimeout(shift)); 
 
    }
    
-   else     
+   else if (current < target)    
    {
       // Speed and timeout is determined by the shift
      drone.up(newSpeed(shift));       
-    setTimeout(function(){ 
+     setTimeout(function(){ 
       console.log("Lower than "+target+"cm...uping")
       console.log("After: "+ current);
       drone.stop();

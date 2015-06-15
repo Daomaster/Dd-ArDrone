@@ -298,7 +298,7 @@ keypress(process.stdin);
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
 // Pin 23
-button3.watch(function(err, value){
+button2.watch(function(err, value){
 // 100cm(98~102)
   if (value === 0) {
   ledOff();
@@ -306,8 +306,8 @@ button3.watch(function(err, value){
   climb(drone,a);  
   } 
 });
-//Pin 18
-button2.watch(function(err, value){
+//Pin 17
+button1.watch(function(err, value){
 // 120cm(118~122)
 
   if (value === 0) {
@@ -317,7 +317,7 @@ button2.watch(function(err, value){
   } 
 });
 //Pin 17
-button1.watch(function(err, value){
+button3.watch(function(err, value){
 // 140cm(138~142)
   
   if (value === 0) {
@@ -334,6 +334,7 @@ var quit = function(){
   console.log('Quitting');
   process.stdin.pause();
    drone.stop();
+   ledOff();
    console.log('Landing');
    drone.land();
    drone._udpControl.close();

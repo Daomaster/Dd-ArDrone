@@ -311,7 +311,7 @@ stream(drone,plotly);
 keypress(process.stdin);  
 
 // Blink the LED
-blink(1000);
+blink(2000);
 
 //Drone take off when program starts
   console.log('drone Takeoff!');
@@ -376,7 +376,7 @@ process.stdin.on('keypress', function (ch, key) {
  }
  if(key && key.name == 's') {
    drone.takeoff();
-   blink(1000);
+   blink(2000);
    drone.stop();
  }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function

@@ -15,11 +15,11 @@ var tokens = ["8ndzhzyhoy","no19cl7wb8"];
 
 // GPIO initialization
 var GPIO = require('onoff').Gpio,
-    button1 = new GPIO(17, 'in', 'both');
-    button2 = new GPIO(18, 'in', 'both');
-    button3 = new GPIO(23, 'in', 'both');
-    led1 = new GPIO(22,'out');
-    led2 = new GPIO(24,'out');
+    button1 = new GPIO(17, 'in', 'both'),
+    button2 = new GPIO(18, 'in', 'both'),
+    button3 = new GPIO(23, 'in', 'both'),
+    led1 = new GPIO(22,'out'),
+    led2 = new GPIO(24,'out'),
     led3 = new GPIO(27,'out');
 
 // Global varibles

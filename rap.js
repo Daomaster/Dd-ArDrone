@@ -306,7 +306,8 @@ button2.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("100cm !");
-  climb(drone,a);  
+  climb(drone,a);
+  drone.stop();  
   } 
 });
 //Pin 17
@@ -316,7 +317,8 @@ button1.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);  
+  climb(drone,b);
+  drone.stop();  
   } 
 });
 //Pin 17
@@ -326,7 +328,8 @@ button3.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);  
+  climb(drone,c);
+  drone.stop();  
   }
 });
 

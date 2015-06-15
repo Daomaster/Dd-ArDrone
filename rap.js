@@ -282,9 +282,9 @@ else{
   var blink = function(time){
     //blink every 200ms
     iv = setInterval(function () {
-    led1.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :) 
-    led2.writeSync(led.readSync() ^ 1); 
-    led3.writeSync(led.readSync() ^ 1); 
+    led1.writeSync(led1.readSync() ^ 1); // 1 = on, 0 = off :) 
+    led2.writeSync(led1.readSync() ^ 1); 
+    led3.writeSync(led1.readSync() ^ 1); 
     }, 200);
 
     setTimeout(function () {

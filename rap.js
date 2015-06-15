@@ -169,15 +169,15 @@ plotly.plot(data, layout, function (err, msg) {
    {
     switch(target){
       case a:
-      return led1;
-      break;
-
-      case b:
       return led2;
       break;
 
-      case c:
+      case b:
       return led3;
+      break;
+
+      case c:
+      return led1;
       break;
     }
    }; 

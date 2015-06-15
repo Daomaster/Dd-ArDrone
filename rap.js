@@ -282,13 +282,14 @@ else{
   var blink = function(time){
     //blink every 200ms
     iv = setInterval(function () {
-    led.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :) 
+    led1.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :) 
+    led2.writeSync(led.readSync() ^ 1); 
+    led3.writeSync(led.readSync() ^ 1); 
     }, 200);
 
     setTimeout(function () {
     clearInterval(iv); // Stop blinking 
-    led.writeSync(0);  // Turn LED off. 
-    led.unexport();    // Unexport GPIO and free resources 
+    ledOff();
      }, time);
   }
 

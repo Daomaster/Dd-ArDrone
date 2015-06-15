@@ -169,7 +169,7 @@ plotly.plot(data, layout, function (err, msg) {
    {
     switch(target){
       case a:
-      return led2;
+      return led1;
       break;
 
       case b:
@@ -177,7 +177,7 @@ plotly.plot(data, layout, function (err, msg) {
       break;
 
       case c:
-      return led1;
+      return led2;
       break;
     }
    }; 

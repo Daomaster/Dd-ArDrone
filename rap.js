@@ -20,7 +20,8 @@ var GPIO = require('onoff').Gpio,
     button3 = new GPIO(23, 'in', 'both'),
     led1 = new GPIO(22,'out'),
     led2 = new GPIO(24,'out'),
-    led3 = new GPIO(27,'out');
+    led3 = new GPIO(27,'out'),
+    iv;
 
 // Global varibles
 var altitude;
@@ -277,6 +278,20 @@ else{
   });
   };
 
+  // Blink function
+  var blink = function(time){
+    //blink every 200ms
+    iv = setInterval(function () {
+    led.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :) 
+    }, 200);
+
+    setTimeout(function () {
+    clearInterval(iv); // Stop blinking 
+    led.writeSync(0);  // Turn LED off. 
+    led.unexport();    // Unexport GPIO and free resources 
+     }, time);
+  }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Program Start
@@ -292,6 +307,9 @@ stream(drone,plotly);
 
 // Read in the keys
 keypress(process.stdin);  
+
+// Blink the LED
+blink(800);
 
 //Drone take off when program starts
   console.log('drone Takeoff!');

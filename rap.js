@@ -6,7 +6,8 @@ var keypress = require('keypress');
 var arDrone = require('ar-drone');    
 
 // Drone initialization
-var drone = arDrone.createClient({ip: '192.168.1.200'}); 
+var drone = arDrone.createClient({ip: '192.168.1.200'});
+drone.disableEmergency(); 
 
 // Stream initialization
 var data = [];

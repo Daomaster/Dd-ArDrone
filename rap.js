@@ -320,7 +320,7 @@ blink(1000);
 
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
-// Pin 23
+// Pin 18
 button2.watch(function(err, value){
 // 100cm(98~102)
   if (value === 0) {
@@ -341,7 +341,7 @@ button1.watch(function(err, value){
   drone.stop();  
   } 
 });
-//Pin 17
+//Pin 23
 button3.watch(function(err, value){
 // 140cm(138~142)
   
@@ -373,6 +373,11 @@ process.stdin.on('keypress', function (ch, key) {
    drone.stop();
    ledOff();
    drone.land();
+ }
+ if(key && key.name == 's') {
+   drone.takeoff();
+   blink(1000);
+   drone.stop();
  }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
 });

@@ -38,9 +38,7 @@ button1.watch(function(err, value){// for the pin 17 (up)
                           drone.stop();
                           console.log("Stop: 1");
                          }, 300);   
-	}	else{
-	led1.writeSync(0);
-	}
+	}	
 	else{
 	led1.writeSync(0);
 	}

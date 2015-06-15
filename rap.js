@@ -343,7 +343,7 @@ var quit = function(){
 process.stdin.on('keypress', function (ch, key) {
   // If key.name === 'c' use the quit function
   if(key && key.name == 'l') {
-   drone.quit();
+   drone.stop();
    drone.land();
  }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function

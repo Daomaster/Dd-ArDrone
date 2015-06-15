@@ -311,7 +311,7 @@ stream(drone,plotly);
 keypress(process.stdin);  
 
 // Blink the LED
-blink(800);
+blink(1000);
 
 //Drone take off when program starts
   console.log('drone Takeoff!');

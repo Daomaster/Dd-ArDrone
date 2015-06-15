@@ -18,9 +18,9 @@ drone1.ftrim();
 drone1.config('general:navdata_demo', 'TRUE');
 
 //Drone 1 takes off and 4 secs later Drone 2 take off
-	console.log('drone1 Takeoff!');
-    drone1.takeoff();
-    drone1.stop();
+	console.log('drone Takeoff!');
+    drone.takeoff();
+    drone.stop();
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
 
@@ -30,14 +30,16 @@ button1.watch(function(err, value){// for the pin 17 (up)
 	led1.writeSync(1);
 	console.log("Drone 1 goes up!");
 	//Drone go up in 80% speed for .3 sec
-	drone1.up(0.8);  
+	drone.up(0.8);  
 
 
 
     setTimeout(function(){ 
-                          drone1.stop();
+                          drone.stop();
                           console.log("Stop: 1");
                          }, 300);   
+	}	else{
+	led1.writeSync(0);
 	}
 	else{
 	led1.writeSync(0);
@@ -53,9 +55,9 @@ button2.watch(function(err, value){
 	led2.writeSync(1);
 	console.log("Drone 2 goes up!");
 	//Drone go up in 80% speed for .3 sec
-	drone1.up(0.8);  
+	drone.up(0.8);  
     setTimeout(function(){ 
-                          drone1.stop();
+                          drone.stop();
                           console.log("Stop: 2");
                          }, 300);   
 	}
@@ -72,8 +74,8 @@ button3.watch(function(err, value){
 	led3.writeSync(1);
 	console.log("Fleet landing!");
 	//The whole fleet will land after button3 is pressed
-      drone1.stop();
-      drone1.land();
+      drone.stop();
+      drone.land();
 	}
 	else{
 	led3.writeSync(0);

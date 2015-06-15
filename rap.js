@@ -12,6 +12,16 @@ var drone = arDrone.createClient({ip: '192.168.1.200'});
 var data = [];
 var layout;
 var tokens = ["8ndzhzyhoy","no19cl7wb8"];
+
+// GPIO initialization
+var GPIO = require('onoff').Gpio,
+    button1 = new GPIO(17, 'in', 'both');
+    button2 = new GPIO(18, 'in', 'both');
+    button3 = new GPIO(23, 'in', 'both');
+    led1 = new GPIO(22,'out');
+    led2 = new GPIO(24,'out');
+    led3 = new GPIO(27,'out');
+
 // Global varibles
 var altitude;
 var target = 75;
@@ -155,6 +165,29 @@ plotly.plot(data, layout, function (err, msg) {
         return 1;
       }
                       };
+   var getLed = function(target)
+   {
+    switch(target){
+      case a:
+      return led1;
+      break;
+
+      case b:
+      return led2;
+      break;
+
+      case c:
+      return led3;
+      break;
+    }
+   }; 
+
+   var ledOff = function()
+   {
+     led1.writeSync(0);
+     led2.writeSync(0);
+     led3.writeSync(0);
+   }
 
 // Reach to the target altitude 
 var climb = function(drone,target)
@@ -173,10 +206,11 @@ var climb = function(drone,target)
    
  if(stop === false){
    
-   if(current === target || (current > target-3 && current < target+3))
+   if(current === target || (current > target-2 && current < target+2))
    {    
     drone.stop();
-    console.log("Reached altitude of " + target);  
+    console.log("Reached altitude of " + target); 
+    getLed(target).writeSync(1); 
     return;
    }
    
@@ -208,7 +242,7 @@ var climb = function(drone,target)
 else{
   return;
 }
-}
+};
 
  // Return the altitude from the Navdata 
  var getaltitude = function(drone)
@@ -250,92 +284,50 @@ else{
 //Flat trim
 drone.ftrim();
 
-//Start stream listener
-stream(drone,plotly);
-
 // Read in the keys
-keypress(process.stdin);        
+keypress(process.stdin);  
 
-// Declare key modules
-var keys = {
+//Start stream listener
+//stream(drone,plotly);
 
-  // l for land
-  'l': function(){
-    console.log('Land!');
-    drone.stop();
-    drone.land();
-  },
-
-  // s for drone1 take off
-  's': function(){
-    console.log('drone1 takeoff!');
+//Drone take off when program starts
+  console.log('drone Takeoff!');
     drone.takeoff();
     drone.stop();
-  },
 
-  // w for drone1 go up
-  'w': function(){
-    console.log('drone up!');
-    drone.up(1);
-    setTimeout(function(){ 
-                          drone.stop();
-                          console.log("Stop: 1");
-                         }, 300);  
-  },
+//Now the GPIO takes over the control by watch() function
+//Sychronized function so paralle 
+// Pin 17
+button1.watch(function(err, value){
+// 100cm(98~102)
+  if (value === 0) {
+  ledOff();
+  console.log("100cm !");
+  climb(drone,a);  
+  } 
+});
+//Pin 18
+button2.watch(function(err, value){
+// 120cm(118~122)
 
-  // q for stop the drone
-  'q': function(){
-  console.log("drone stop!");
-    drone.stop();
-  },
-
-  // o for line 1
-  'o': function(){  //             
+  if (value === 0) {
+  ledOff();
+  console.log("100cm !");
+  climb(drone,b);  
+  } 
+});
+//Pin 23
+button3.watch(function(err, value){
+// 140cm(138~142)
   
-      console.log("Testing climb function 100");
-      stop = true;
-      setTimeout(function(){
-      stop=false;
-      target = a;
-      console.log("Target is "+target);
-      climb(drone,target);
-      drone.stop();
-      },100);
-
-
-
-    },
-  
-  // k for line 2  
-  'k': function(){  //2nd line             
-  
-      console.log("Testing climb function 120");
-      stop = true;
-      setTimeout(function(){
-      stop=false;
-      target = b;
-      console.log("Target is "+target);
-      climb(drone,target);
-      drone.stop();
-      },100);
-      
-    },
-  
-  // m for line 3
-  'm': function(){               
-  
-      console.log("Testing climb function 140");
-      stop = true;
-      setTimeout(function(){
-      stop=false;
-      target = c;
-      console.log("Target is "+target);
-      climb(drone,target);
-      drone.stop();
-      },100);
-    }
-
+  if (value === 0) {
+  ledOff();
+  console.log("100cm !");
+  climb(drone,c);  
   }
+});
+
+
 
 // Exit the program 
 var quit = function(){
@@ -346,19 +338,11 @@ var quit = function(){
    drone.land();
    drone._udpControl.close();
 
-}
+};
 
 process.stdin.on('keypress', function (ch, key) {
-  // Finds the matching keyname and executes the function, inside the key.name array
-  if(key && keys[key.name])                           
-    { keys[key.name](); }
-  
   // If key.name === 'c' use the quit function
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
-  
-  // Print out the altitude for debug reason
-  //print_altitude(drone);
-
 });
 
 process.stdin.setRawMode(true);     //Refresh and keep true.

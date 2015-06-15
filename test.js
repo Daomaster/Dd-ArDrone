@@ -290,7 +290,7 @@ var keys = {
   },
 
   // o for line 1
-  'o': function(){               
+  'o': function(){  //             
   
       console.log("Testing climb function 100");
       stop = true;
@@ -301,10 +301,13 @@ var keys = {
       climb(drone,target);
       drone.stop();
       },100);
+
+
+
     },
   
   // k for line 2  
-  'k': function(){               
+  'k': function(){  //2nd line             
   
       console.log("Testing climb function 120");
       stop = true;

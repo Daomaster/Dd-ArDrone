@@ -284,11 +284,11 @@ else{
 //Flat trim
 drone.ftrim();
 
-// Read in the keys
-keypress(process.stdin);  
-
 //Start stream listener
 stream(drone,plotly);
+
+// Read in the keys
+keypress(process.stdin);  
 
 //Drone take off when program starts
   console.log('drone Takeoff!');

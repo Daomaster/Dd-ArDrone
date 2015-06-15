@@ -297,8 +297,8 @@ keypress(process.stdin);
 
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
-// Pin 17
-button1.watch(function(err, value){
+// Pin 23
+button3.watch(function(err, value){
 // 100cm(98~102)
   if (value === 0) {
   ledOff();
@@ -312,17 +312,17 @@ button2.watch(function(err, value){
 
   if (value === 0) {
   ledOff();
-  console.log("100cm !");
+  console.log("120cm !");
   climb(drone,b);  
   } 
 });
-//Pin 23
-button3.watch(function(err, value){
+//Pin 17
+button1.watch(function(err, value){
 // 140cm(138~142)
   
   if (value === 0) {
   ledOff();
-  console.log("100cm !");
+  console.log("140cm !");
   climb(drone,c);  
   }
 });

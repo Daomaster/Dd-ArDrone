@@ -17,8 +17,8 @@ var Gpio = require("onoff").Gpio,
 	led5 = new Gpio(24, 'out'),
 	led6 = new Gpio(10, 'out');
 
-var buttons = [button1, button2, button3, button4,button5,button6,button7,button8,button9];
-var leds = [led1, led2, led3, led4, led5,led6,led7,led8,led9];
+var buttons = [button1, button2, button3, button4,button5,button6];
+var leds = [led1, led2, led3, led4, led5,led6];
 
 for(var i =0; i<6;i++)
 {

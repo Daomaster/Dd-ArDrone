@@ -22,7 +22,7 @@ var leds = [led1, led2, led3, led4, led5,led6];
 
 for(var i =0; i<6;i++)
 {
- button[i].watch(function(err,value){
- 	led[i].writeSync(value);
+ buttons[i].watch(function(err,value){
+ 	leds[i].writeSync(value);
  });
 }

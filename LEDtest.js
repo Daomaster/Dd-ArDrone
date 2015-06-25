@@ -21,14 +21,14 @@ var buttons = [button1, button2, button3, button4,button5,button6];
 var leds = [led1, led2, led3, led4, led5,led6];
 for(var i=0;i<3;i++)
 {
- button1.watch(function(err, value) {
+ buttons[i].watch(function(err, value) {
   if(value === 0){
   	console.log('Button Off');
-  	  led1.writeSync(1);
+  	  leds[i].writeSync(1);
   }
   else{
   	console.log('Button on');
-  	  led1.writeSync(0);
+  	  leds[i].writeSync(0);
   }
 });
 }

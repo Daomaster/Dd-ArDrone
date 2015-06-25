@@ -20,6 +20,7 @@ var Gpio = require("onoff").Gpio,
 var buttons = [button1, button2, button3, button4,button5,button6];
 var leds = [led1, led2, led3, led4, led5,led6];
  button1.watch(function(err, value) {
+  led1.writeSync(value);
   if(value === 0){
   	console.log('Button Off');
   }

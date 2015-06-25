@@ -53,3 +53,36 @@ var leds = [led1, led2, led3, led4, led5,led6];
   	  led3.writeSync(0);
   }
 });
+
+ button4.watch(function(err, value) {
+  if(value === 0){
+  	console.log('Button4 Off');
+  	  led4.writeSync(1);
+  }
+  else{
+  	console.log('Button4 on');
+  	  led4.writeSync(0);
+  }
+});
+
+ button5.watch(function(err, value) {
+  if(value === 0){
+  	console.log('Button5 Off');
+  	  led5.writeSync(1);
+  }
+  else{
+  	console.log('Button5 on');
+  	  led5.writeSync(0);
+  }
+});
+
+ button6.watch(function(err, value) {
+  if(value === 0){
+  	console.log('Button6 Off');
+  	  led6.writeSync(1);
+  }
+  else{
+  	console.log('Button6 on');
+  	  led6.writeSync(0);
+  }
+});

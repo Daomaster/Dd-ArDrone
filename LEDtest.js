@@ -21,7 +21,7 @@ var buttons = [button1, button2, button3, button4,button5,button6];
 var leds = [led1, led2, led3, led4, led5,led6];
 
 
- button1.watch(function(err, value) {
+/* button1.watch(function(err, value) {
   if(value === 0){
   	console.log('Button1 Off');
   	  led1.writeSync(1);
@@ -53,7 +53,7 @@ var leds = [led1, led2, led3, led4, led5,led6];
   	  led3.writeSync(0);
   }
 });
-
+*/
  button4.watch(function(err, value) {
   if(value === 0){
   	console.log('Button4 Off');

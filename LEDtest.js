@@ -19,16 +19,37 @@ var Gpio = require("onoff").Gpio,
 
 var buttons = [button1, button2, button3, button4,button5,button6];
 var leds = [led1, led2, led3, led4, led5,led6];
-for(var i=0;i<3;i++)
-{
- buttons[i].watch(function(err, value) {
+
+
+ button1.watch(function(err, value) {
   if(value === 0){
-  	console.log('Button Off');
-  	  leds[i].writeSync(1);
+  	console.log('Button1 Off');
+  	  led1.writeSync(1);
   }
   else{
-  	console.log('Button on');
-  	  leds[i].writeSync(0);
+  	console.log('Button1 on');
+  	  led1.writeSync(0);
   }
 });
-}
+
+ button2.watch(function(err, value) {
+  if(value === 0){
+  	console.log('Button2 Off');
+  	  led2.writeSync(1);
+  }
+  else{
+  	console.log('Button2 on');
+  	  led2.writeSync(0);
+  }
+});
+
+ button3.watch(function(err, value) {
+  if(value === 0){
+  	console.log('Button3 Off');
+  	  led3.writeSync(1);
+  }
+  else{
+  	console.log('Button3 on');
+  	  led3.writeSync(0);
+  }
+});

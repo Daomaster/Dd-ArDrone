@@ -9,9 +9,9 @@ var Gpio = require("onoff").Gpio,
 	led2 = new Gpio(15, 'out'),
 	led3 = new Gpio(18, 'out'),
 	
-	button4 = new Gpio(17, 'in', 'both'),
-	button5 = new Gpio(27, 'in', 'both'),
-	button6 = new Gpio(22, 'in', 'both'),
+	button4 = new Gpio(16, 'in', 'both'),
+	button5 = new Gpio(20, 'in', 'both'),
+	button6 = new Gpio(21, 'in', 'both'),
 
 	led4 = new Gpio(23, 'out'),
 	led5 = new Gpio(24, 'out'),

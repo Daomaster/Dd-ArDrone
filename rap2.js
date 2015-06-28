@@ -6,7 +6,10 @@ var keypress = require('keypress');
 var arDrone = require('ar-drone');    
 
 // Drone initialization
-var drone = arDrone.createClient({ip: '192.168.1.200'});
+var drone1 = arDrone.createClient({ip: '192.168.1.200'});
+var drone2 = arDrone.createClient({ip: '192.168.1.202'});
+var drone3 = arDrone.createClient({ip: '192.168.1.203'});
+var fleet = [drone1,drone2,drone3];
 drone.disableEmergency(); 
 
 // Stream initialization
@@ -352,7 +355,7 @@ button1.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("100cm !");
-  climb(drone,a);
+  climb(drone1,a);
   drone.stop();  
   } 
 });
@@ -362,7 +365,7 @@ button2.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);
+  climb(drone1,b);
   drone.stop();  
   } 
 });
@@ -373,7 +376,7 @@ button3.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);
+  climb(drone1,c);
   drone.stop();  
   }
 });
@@ -384,7 +387,7 @@ button4.watch(function(err, value){
   ledOff();
   console.log("100cm !");
   //CHANGE
-  climb(drone,a);
+  climb(drone2,a);
   drone.stop();  
   }
 });
@@ -394,7 +397,7 @@ button5.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);
+  climb(drone2,b);
   drone.stop();  
   }
 });
@@ -404,7 +407,7 @@ button6.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);
+  climb(drone2,c);
   drone.stop();  
   }
 });
@@ -414,7 +417,7 @@ button7.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("100cm !");
-  climb(drone,a);
+  climb(drone3,a);
   drone.stop();  
   }
 });
@@ -424,7 +427,7 @@ button8.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);
+  climb(drone3,b);
   drone.stop();  
   }
 });
@@ -434,7 +437,7 @@ button9.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);
+  climb(drone3,c);
   drone.stop();  
   }
 });

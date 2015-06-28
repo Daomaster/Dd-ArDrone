@@ -6,7 +6,12 @@ var keypress = require('keypress');
 var arDrone = require('ar-drone');    
 
 // Drone initialization
-var drone = arDrone.createClient({ip: '192.168.1.200'});
+var fleet = [];
+var drone1 = arDrone.createClient({ip: '192.168.1.200'});
+var drone2 = arDrone.createClient({ip: '192.168.1.202'});
+var drone3 = arDrone.createClient({ip: '192.168.1.204'});
+var fleet = [drone1,drone2,drone3];
+
 drone.disableEmergency(); 
 
 // Stream initialization
@@ -28,7 +33,7 @@ var GPIO = require('onoff').Gpio,
 var altitude;
 var target = 75;
 var a = 100;
-var b = 120;  
+var b = 120;  z
 var c = 140;
 var stop = false;
 

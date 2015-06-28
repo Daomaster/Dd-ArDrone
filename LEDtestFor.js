@@ -23,10 +23,6 @@ var buttons = [button1, button2, button3, button4,button5,button6];
 var leds = [led1, led2, led3, led4, led5,led6];
 
 
- button1.watch(function(err,value){
- 	led1.writeSync(value);
- });
-
 for(var i = 0; i <6; i++)
 {
 	buttons[i].watch(function(err, value){

@@ -6,12 +6,11 @@ var keypress = require('keypress');
 var arDrone = require('ar-drone');    
 
 // Drone initialization
-var fleet = [];
-var drone1 = arDrone.createClient({ip: '192.168.1.200'});
+var drone = arDrone.createClient();
 
 drone.disableEmergency(); 
 
-// Stream initialization
+// Stream initialization (Plotly)
 var data = [];
 var layout;
 var tokens = ["8ndzhzyhoy","no19cl7wb8"];
@@ -260,7 +259,7 @@ else{
       altitude = Math.round(altitude);
         }
     }
-  });
+  }); //may need to put return altitude here between the right brackets
    return altitude;
   };
 
@@ -296,9 +295,12 @@ else{
      }, time);
   }
 
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Program Start
+//                ~~~~**MAIN**~~~~
 
 //Make sure all the LED are off
 ledOff();
@@ -323,20 +325,11 @@ blink(2000);
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
 
+
+
 //Pin 2
 button1.watch(function(err, value){
-//100cm(98~102) 
-  if (value === 0) {
-  ledOff();
-  console.log("120cm !");
-  climb(drone,b);
-  drone.stop();  
-  } 
-});
-
-//Pin 3
-button2.watch(function(err, value){
-// 120cm(118~122)
+//100cm (98~102)
 
   if (value === 0) {
   ledOff();
@@ -346,9 +339,22 @@ button2.watch(function(err, value){
   } 
 });
 
+
+//Pin 3
+button2.watch(function(err, value){
+//  120cm (118~122)
+  if (value === 0) {
+  ledOff();
+  console.log("120cm !");
+  climb(drone,b);
+  drone.stop();  
+  } 
+});
+
+
 //Pin 4
 button3.watch(function(err, value){
-// 140cm(138~142)
+// 140cm (138~142)
   
   if (value === 0) {
   ledOff();

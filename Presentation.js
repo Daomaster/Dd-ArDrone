@@ -11,7 +11,7 @@ var Gpio = require("onoff").Gpio,
 
 
 button1.watch(function(err, value) {
-  if(value === 0){
+  if(value === 1){
   	console.log('Button1 Off');
   	  led1.writeSync(0);
   }
@@ -22,7 +22,7 @@ button1.watch(function(err, value) {
 });
 
  button2.watch(function(err, value) {
-  if(value === 0){
+  if(value === 1){
   	console.log('Button2 Off');
   	  led2.writeSync(0);
   }
@@ -33,7 +33,7 @@ button1.watch(function(err, value) {
 });
 
  button3.watch(function(err, value) {
-  if(value === 0){
+  if(value === 1){
   	console.log('Button3 Off');
   	  led3.writeSync(0);
   }

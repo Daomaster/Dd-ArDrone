@@ -24,9 +24,9 @@ var GPIO = require('onoff').Gpio,
     button1 = new GPIO(2, 'in', 'both'),
     button2 = new GPIO(3, 'in', 'both'),
     button3 = new GPIO(4, 'in', 'both'),
-    led1 = new GPIO(14,'out'),
-    led2 = new GPIO(15,'out'),
-    led3 = new GPIO(18,'out'),
+    led1 = new GPIO(17,'out'),
+    led2 = new GPIO(27,'out'),
+    led3 = new GPIO(22,'out'),
     iv;
 
 // Global varibles

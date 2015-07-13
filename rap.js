@@ -8,9 +8,6 @@ var arDrone = require('ar-drone');
 // Drone initialization
 var fleet = [];
 var drone1 = arDrone.createClient({ip: '192.168.1.200'});
-var drone2 = arDrone.createClient({ip: '192.168.1.202'});
-var drone3 = arDrone.createClient({ip: '192.168.1.204'});
-var fleet = [drone1,drone2,drone3];
 
 drone.disableEmergency(); 
 
@@ -33,7 +30,7 @@ var GPIO = require('onoff').Gpio,
 var altitude;
 var target = 75;
 var a = 100;
-var b = 120;  z
+var b = 120;
 var c = 140;
 var stop = false;
 
@@ -176,15 +173,15 @@ plotly.plot(data, layout, function (err, msg) {
    {
     switch(target){
       case a:
-      return led3;
-      break;
-
-      case b:
       return led1;
       break;
 
-      case c:
+      case b:
       return led2;
+      break;
+
+      case c:
+      return led3;
       break;
     }
    }; 
@@ -325,20 +322,10 @@ blink(2000);
 
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
-// Pin 18
-button2.watch(function(err, value){
-// 100cm(98~102)
-  if (value === 0) {
-  ledOff();
-  console.log("100cm !");
-  climb(drone,a);
-  drone.stop();  
-  } 
-});
-//Pin 17
-button1.watch(function(err, value){
-// 120cm(118~122)
 
+//Pin 2
+button1.watch(function(err, value){
+//100cm(98~102) 
   if (value === 0) {
   ledOff();
   console.log("120cm !");
@@ -346,7 +333,20 @@ button1.watch(function(err, value){
   drone.stop();  
   } 
 });
-//Pin 23
+
+//Pin 3
+button2.watch(function(err, value){
+// 120cm(118~122)
+
+  if (value === 0) {
+  ledOff();
+  console.log("100cm !");
+  climb(drone,a);
+  drone.stop();  
+  } 
+});
+
+//Pin 4
 button3.watch(function(err, value){
 // 140cm(138~142)
   

@@ -317,20 +317,20 @@ keypress(process.stdin);
 // Blink the LED
 blink(2000);
 
-//Drone take off when program starts
-  console.log('drone Takeoff!');
-    drone.takeoff();
-    drone.stop();
+/* Drone take off when program starts
+   console.log('drone Takeoff!');
+     drone.takeoff();
+     drone.stop(); */
+
 
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
 
 
 
-//Pin 2
+//GPIO Pin 2
 button1.watch(function(err, value){
 //100cm (98~102)
-
   if (value === 0) {
   ledOff();
   console.log("100cm !");
@@ -340,7 +340,7 @@ button1.watch(function(err, value){
 });
 
 
-//Pin 3
+//GPIO Pin 3
 button2.watch(function(err, value){
 //  120cm (118~122)
   if (value === 0) {
@@ -352,7 +352,7 @@ button2.watch(function(err, value){
 });
 
 
-//Pin 4
+//GPIO Pin 4
 button3.watch(function(err, value){
 // 140cm (138~142)
   

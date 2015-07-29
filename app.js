@@ -262,6 +262,9 @@ blink(2000);
 //Websocket is on listening if any client connected
 io.on("connection",function (socket) {
 
+socket.on('device',function(data){
+    console.log("CLient Connected");
+});
 // Read in the keys
 keypress(process.stdin);  
 
@@ -275,8 +278,10 @@ button1.watch(function(err, value){
   climb(drone,a);
   if (check) {
     socket.emit('check','green');
+      drone.stop();
   };
-  drone.stop();  
+  drone.stop();
+  check = false;
   } 
 });
 
@@ -290,8 +295,10 @@ button2.watch(function(err, value){
   climb(drone,b);
   if (check) {
     socket.emit('check','yellow');
+      drone.stop();
   };
-  drone.stop();  
+  drone.stop();
+  check = false;
   } 
 });
 
@@ -306,8 +313,10 @@ button3.watch(function(err, value){
   climb(drone,c);
   if (check) {
     socket.emit('check','red');
+    drone.stop();
   };
-  drone.stop();  
+  drone.stop();
+  check = false;  
   }
 });
 

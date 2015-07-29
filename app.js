@@ -276,12 +276,8 @@ button1.watch(function(err, value){
   ledOff();
   console.log("100cm !");
   climb(drone,a);
-  if (check) {
-    socket.emit('check','green');
-      drone.stop();
-  };
+  socket.emit('check','green');
   drone.stop();
-  check = false;
   } 
 });
 
@@ -293,12 +289,8 @@ button2.watch(function(err, value){
   ledOff();
   console.log("120cm !");
   climb(drone,b);
-  if (check) {
-    socket.emit('check','yellow');
-      drone.stop();
-  };
+  socket.emit('check','yellow');
   drone.stop();
-  check = false;
   } 
 });
 
@@ -311,12 +303,8 @@ button3.watch(function(err, value){
   ledOff();
   console.log("140cm !");
   climb(drone,c);
-  if (check) {
-    socket.emit('check','red');
-    drone.stop();
-  };
+  socket.emit('check','red');  
   drone.stop();
-  check = false;  
   }
 });
 

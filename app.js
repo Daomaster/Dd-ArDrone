@@ -256,9 +256,6 @@ ledOff();
 //Flat trim
 drone.ftrim();
 
-// Blink the LED
-blink(2000);
-
 //Websocket is on listening if any client connected
 io.on("connection",function (socket) {
 
@@ -331,7 +328,6 @@ process.stdin.on('keypress', function (ch, key) {
  }
  if(key && key.name == 's') {
    drone.takeoff();
-   blink(2000);
    drone.stop();
  }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function

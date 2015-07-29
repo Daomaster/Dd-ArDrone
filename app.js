@@ -237,14 +237,15 @@ ledOff();
 //Flat trim
 drone.ftrim();
 
+// Blink the LED
+blink(2000);
+
 //Websocket is on listening if any client connected
 io.on("connection",function (socket) {
 
 // Read in the keys
 keypress(process.stdin);  
 
-// Blink the LED
-blink(2000);
 
 //GPIO Pin 2
 button1.watch(function(err, value){

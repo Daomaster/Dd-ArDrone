@@ -1,5 +1,9 @@
 var arDrone = require('ar-drone');    
-var drone = arDrone.createClient({ip: '192.168.1.204'});
+var drone = arDrone.createClient();
+
 
 console.log('Take off');
 drone.takeoff();
+drone.after(function(){
+drone.land();
+}, 1000);

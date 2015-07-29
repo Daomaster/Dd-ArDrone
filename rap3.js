@@ -3,39 +3,82 @@
 // Libary set-up
 var plotly = require('plotly')('Daomaster','1i7911aysc');
 var keypress = require('keypress');   
-var arDrone = require('ar-drone');    
+var arDrone = require('ar-drone');
+var drone = require('./drone.js')    
 
 // Drone initialization
-var drone = arDrone.createClient();
+var drone1 = new drone('200',1);
+var drone2 = new drone('202',2);
+var drone3 = new drone('204',3);
+var fleet = [drone1,drone2,drone3];
 
-drone.disableEmergency(); 
+fleet.forEach(function(drone){
+  drone.controller.disableEmergency();
+});
 
-// Stream initialization (Plotly)
-var data = [];
-var layout;
-var tokens = ["8ndzhzyhoy","no19cl7wb8"];
+// Stream initialization
+//var data = [];
+//var layout;
+//var tokens = ["8ndzhzyhoy","no19cl7wb8"];
 
 // GPIO initialization
 var GPIO = require('onoff').Gpio,
     button1 = new GPIO(2, 'in', 'both'),
     button2 = new GPIO(3, 'in', 'both'),
     button3 = new GPIO(4, 'in', 'both'),
-    led1 = new GPIO(17,'out'),
-    led2 = new GPIO(27,'out'),
-    led3 = new GPIO(22,'out'),
+    button4 = new GPIO(17, 'in', 'both'),
+    button5 = new GPIO(27, 'in', 'both'),
+    button6 = new GPIO(22, 'in', 'both'),
+    button7 = new GPIO(11, 'in', 'both'),
+    button8 = new GPIO(8, 'in', 'both'),
+    button9 = new GPIO(7, 'in', 'both'),
+    led1 = new GPIO(14,'out'),
+    led2 = new GPIO(15,'out'),
+    led3 = new GPIO(18,'out'),
+    led4 = new GPIO(23,'out'),
+    led5 = new GPIO(24,'out'),
+    led6 = new GPIO(10,'out'),
+    led7 = new GPIO(16,'out'),
+    led8 = new GPIO(20,'out'),
+    led9 = new GPIO(21,'out'),
     iv;
+
+  var leds = [
+  led1,
+  led2,
+  led3,
+  led4,
+  led5,
+  led6,
+  led7,
+  led8,
+  led9
+  ];
+
+  var buttons = [
+  button1,
+  button2,
+  button3,
+  button4,
+  button5,
+  button6,
+  button7,
+  button8,
+  button9
+  ];
 
 // Global varibles
 var altitude;
-var target = 75;
+//var target = 75;
 var a = 100;
-var b = 120;
+var b = 120;  
 var c = 140;
 var stop = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function set-up
+/*
 var stream = function(drone, plotly)
 {
 //Set up empty array of data to set the two traces
@@ -102,7 +145,7 @@ plotly.plot(data, layout, function (err, msg) {
     }, 200);
 });
 
-}
+} */
 
 // Using shift to determine the timeout value
  var newTimeout = function(shift)
@@ -168,19 +211,53 @@ plotly.plot(data, layout, function (err, msg) {
         return 1;
       }
                       };
-   var getLed = function(target)
+   var getLed = function(target,id)
    {
-    switch(target){
-      case a:
-      return led1;
+    switch(id){
+      case 1:
+      switch(target){
+        case a:
+        return led1;
+        break;
+        
+        case b:
+        return led2;
+        break;
+        
+        case c:
+        return led3;
+        break;
+      }
       break;
 
-      case b:
-      return led2;
+      case 2:
+       switch(target){
+        case a:
+        return led4;
+        break;
+        
+        case b:
+        return led5;
+        break;
+        
+        case c:
+        return led6;
+        break;
       break;
 
-      case c:
-      return led3;
+      case 3:
+       switch(target){
+        case a:
+        return led7;
+        break;
+        
+        case b:
+        return led8;
+        break;
+        
+        case c:
+        return led9;
+        break;
       break;
     }
    }; 
@@ -190,12 +267,19 @@ plotly.plot(data, layout, function (err, msg) {
      led1.writeSync(0);
      led2.writeSync(0);
      led3.writeSync(0);
+     led4.writeSync(0);
+     led5.writeSync(0);
+     led6.writeSync(0);
+     led7.writeSync(0);
+     led8.writeSync(0);
+     led9.writeSync(0);
    }
 
 // Reach to the target altitude 
-var climb = function(drone,target)
+var climb = function(drone)
   {
-   var current=getaltitude(drone);
+   var current= drone.getaltitude();
+   var target = drone.target;
 
    // Determine the shift
    var shift = getshift(target,current);
@@ -211,9 +295,10 @@ var climb = function(drone,target)
    
    if(current === target || (current > target-2 && current < target+2))
    {    
-    drone.stop();
+    drone.controller.stop();
+    drone.isTarget = true;
     console.log("Reached altitude of " + target); 
-    getLed(target).writeSync(1); 
+    getLed(target,drone.id).writeSync(1); 
     return;
    }
    
@@ -224,8 +309,8 @@ var climb = function(drone,target)
      setTimeout(function(){ 
       console.log("Higher than "+target+"cm...lowering")
       console.log("After: "+ current);
-      drone.stop(); 
-      climb(drone,target);  
+      drone.controller.stop(); 
+      climb(drone);  
      }, newTimeout(shift)); 
 
    }
@@ -237,8 +322,8 @@ var climb = function(drone,target)
      setTimeout(function(){ 
       console.log("Lower than "+target+"cm...uping")
       console.log("After: "+ current);
-      drone.stop();
-      climb(drone,target);  
+      drone.controller.stop();
+      climb(drone);  
    }, newTimeout(shift)); 
    }
  }
@@ -247,46 +332,19 @@ else{
 }
 };
 
- // Return the altitude from the Navdata 
- var getaltitude = function(drone)
-  {
-
-   drone.on('navdata', function(d) {
-    if (d.demo) {
-    if (d.demo.altitude) {
-      altitude = d.demo.altitude;
-      altitude = altitude * 100;
-      altitude = Math.round(altitude);
-        }
-    }
-  }); //may need to put return altitude here between the right brackets
-   return altitude;
-  };
-
- // Constantly print out the current altitude
- var print_altitude = function(drone)
-  {
-   drone.on('navdata', function(d) {
-    if (d.demo) {
-    if (d.demo.altitude) {
-      altitude = d.demo.altitude;
-      altitude = altitude * 100;
-      altitude = Math.round(altitude);
-      setTimeout(function(){ 
-                          console.log(altitude); 
-                           }, 200);     
-        }
-    }
-  });
-  };
-
   // Blink function
   var blink = function(time){
     //blink every 200ms
     iv = setInterval(function () {
     led1.writeSync(led1.readSync() ^ 1); // 1 = on, 0 = off :) 
-    led2.writeSync(led1.readSync() ^ 1); 
-    led3.writeSync(led1.readSync() ^ 1); 
+    led2.writeSync(led2.readSync() ^ 1); 
+    led3.writeSync(led3.readSync() ^ 1);
+    led4.writeSync(led4.readSync() ^ 1);
+    led5.writeSync(led5.readSync() ^ 1);
+    led6.writeSync(led6.readSync() ^ 1);
+    led7.writeSync(led7.readSync() ^ 1);
+    led8.writeSync(led8.readSync() ^ 1);
+    led9.writeSync(led9.readSync() ^ 1);
     }, 200);
 
     setTimeout(function () {
@@ -295,21 +353,15 @@ else{
      }, time);
   }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Program Start
-//                ~~~~**MAIN**~~~~
 
 //Make sure all the LED are off
 ledOff();
 
-//Flat trim
-drone.ftrim();
-
 //Start stream listener
-stream(drone,plotly);
+//stream(drone,plotly);
 
 // Read in the keys
 keypress(process.stdin);  
@@ -317,78 +369,150 @@ keypress(process.stdin);
 // Blink the LED
 blink(2000);
 
-/* Drone take off when program starts
-   console.log('drone Takeoff!');
-     drone.takeoff();
-     drone.stop(); */
+//Drone take off when program starts
+console.log('drone Takeoff!');
+  
+fleet.forEach(function(drone){
+  drone.controller.ftrim();
+  drone.controller.takeoff();
+  drone.controller.stop();
+  drone.isAir = true;
 
+});
 
 //Now the GPIO takes over the control by watch() function
 //Sychronized function so paralle 
 
-
-
-//GPIO Pin 2
 button1.watch(function(err, value){
-//100cm (98~102)
+
   if (value === 0) {
   ledOff();
   console.log("100cm !");
-  climb(drone,a);
+  drone1.target = a;
+  climb(drone1);
   drone.stop();  
   } 
 });
 
-
-//GPIO Pin 3
 button2.watch(function(err, value){
-//  120cm (118~122)
+
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);
+  drone1.target = b;
+  climb(drone1);
   drone.stop();  
   } 
 });
 
 
-//GPIO Pin 4
 button3.watch(function(err, value){
-// 140cm (138~142)
   
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);
+  drone1.target = c;
+  climb(drone1);
   drone.stop();  
   }
 });
 
+button4.watch(function(err, value){
+  
+  if (value === 0) {
+  ledOff();
+  console.log("100cm !");
+  drone2.target = a;
+  climb(drone2);
+  drone.stop();  
+  }
+});
 
+button5.watch(function(err, value){
+  
+  if (value === 0) {
+  ledOff();
+  console.log("120cm !");
+  drone2.target = b;
+  climb(drone2);
+  drone.stop();  
+  }
+});
+
+button6.watch(function(err, value){
+  
+  if (value === 0) {
+  ledOff();
+  console.log("140cm !");
+  drone2.target = c;
+  climb(drone2);
+  drone.stop();  
+  }
+});
+
+button7.watch(function(err, value){
+  
+  if (value === 0) {
+  ledOff();
+  console.log("100cm !");
+  drone3.target = a;
+  climb(drone3);
+  drone.stop();  
+  }
+});
+
+button8.watch(function(err, value){
+  
+  if (value === 0) {
+  ledOff();
+  console.log("120cm !");
+  drone3.target = b;
+  climb(drone3);
+  drone.stop();  
+  }
+});
+
+button9.watch(function(err, value){
+  
+  if (value === 0) {
+  ledOff();
+  console.log("140cm !");
+  drone3.target = c;
+  climb(drone3);
+  drone.stop();  
+  }
+});
 
 // Exit the program 
 var quit = function(){
-  console.log('Quitting');
-  process.stdin.pause();
-   drone.stop();
+   console.log('Quitting');
+   process.stdin.pause();
    ledOff();
    console.log('Landing');
-   drone.land();
-   drone._udpControl.close();
+   fleet.forEach(function(drone){
+   drone.controller.stop();
+   drone.controller.land();
+   drone.controller._udpControl.close();
+});
 
 };
 
 process.stdin.on('keypress', function (ch, key) {
   // If key.name === 'c' use the quit function
   if(key && key.name == 'l') {
-   drone.stop();
    ledOff();
-   drone.land();
+   fleet.forEach(function(drone){
+   drone.controller.stop();
+   drone.controller.land();
+   });
  }
  if(key && key.name == 's') {
-   drone.takeoff();
    blink(2000);
-   drone.stop();
+   fleet.forEach(function(drone){
+   drone.controller.takeoff();
+   drone.controller.stop();
+
+});
  }
   if(key && key.ctrl && key.name == 'c') { quit(); }  //If key.name === 'c' use the quit function
 });

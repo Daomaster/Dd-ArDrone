@@ -114,6 +114,23 @@ var stop = false;
     }
    }; 
 
+   var getColor = function(target)
+   {
+    switch(target){
+      case a:
+      return 'green';
+      break;
+
+      case b:
+      return 'yellow';
+      break;
+
+      case c:
+      return 'red';
+      break;
+    }
+   }; 
+
 
    var ledOff = function()
    {
@@ -123,7 +140,7 @@ var stop = false;
    }
 
 // Reach to the target altitude 
-var climb = function(drone,target)
+var climb = function(drone,target,socket)
   {
    var current=getaltitude(drone);
 
@@ -143,7 +160,8 @@ var climb = function(drone,target)
    {    
     drone.stop();
     console.log("Reached altitude of " + target); 
-    getLed(target).writeSync(1); 
+    getLed(target).writeSync(1);
+    socket.emit('check',getColor(target)); 
     return;
    }
    
@@ -253,8 +271,7 @@ button1.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("100cm !");
-  climb(drone,a);
-  socket.emit('check','red');
+  climb(drone,a,socket);
   drone.stop();  
   } 
 });
@@ -266,8 +283,7 @@ button2.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);
-  socket.emit('check','green');
+  climb(drone,b,socket);
   drone.stop();  
   } 
 });
@@ -280,8 +296,7 @@ button3.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);
-  socket.emit('check','yellow');
+  climb(drone,c,socket);
   drone.stop();  
   }
 });

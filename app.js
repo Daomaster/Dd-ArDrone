@@ -30,6 +30,7 @@ var a = 100;
 var b = 120;
 var c = 140;
 var stop = false;
+var userNum = 1;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -258,7 +259,7 @@ drone.ftrim();
 
 //Websocket is on listening if any client connected
 io.on("connection",function (socket) {
-var userNum = 1;
+
 //Debug Message
 console.log(userNum + " Clients Connected!");
 userNum++;

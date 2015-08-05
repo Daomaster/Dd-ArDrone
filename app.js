@@ -30,7 +30,7 @@ var a = 100;
 var b = 120;
 var c = 140;
 var stop = false;
-var check = false;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ var climb = function(drone,target)
     drone.stop();
     console.log("Reached altitude of " + target); 
     getLed(target).writeSync(1);
-    check = true;
+    io.emit('check',getColor(target));
     return;
    }
    
@@ -259,9 +259,9 @@ drone.ftrim();
 //Websocket is on listening if any client connected
 io.on("connection",function (socket) {
 
-socket.on('device',function(data){
-    console.log("CLient Connected");
-});
+//Debug Message
+console.log("Client Connected!");
+
 // Read in the keys
 keypress(process.stdin);  
 
@@ -273,8 +273,6 @@ button1.watch(function(err, value){
   ledOff();
   console.log("100cm !");
   climb(drone,a);
-  socket.emit('check','green');
-  drone.stop();
   } 
 });
 
@@ -286,8 +284,6 @@ button2.watch(function(err, value){
   ledOff();
   console.log("120cm !");
   climb(drone,b);
-  socket.emit('check','yellow');
-  drone.stop();
   } 
 });
 
@@ -300,8 +296,6 @@ button3.watch(function(err, value){
   ledOff();
   console.log("140cm !");
   climb(drone,c);
-  socket.emit('check','red');  
-  drone.stop();
   }
 });
 

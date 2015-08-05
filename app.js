@@ -258,9 +258,15 @@ drone.ftrim();
 
 //Websocket is on listening if any client connected
 io.on("connection",function (socket) {
-
+var userNum = 1;
 //Debug Message
-console.log("Client Connected!");
+console.log(userNum + " Clients Connected!");
+userNum++;
+
+socket.on('disconnect',function(){
+console.log("Client disconnect!")
+userNum--;
+});
 
 // Read in the keys
 keypress(process.stdin);  

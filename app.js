@@ -21,6 +21,8 @@ var GPIO = require('onoff').Gpio,
     led1 = new GPIO(17,'out'),
     led2 = new GPIO(27,'out'),
     led3 = new GPIO(22,'out'),
+    b_takeoff = new Gpio(14, 'in', 'both'),
+    b_land = new Gpio(15, 'in', 'both'),
     iv;
 
 // Global varibles
@@ -306,7 +308,15 @@ button3.watch(function(err, value){
   }
 });
 
+b_takeoff.watch(function(err, value){
+    if (value === 0)
+    {drone.takeoff();}
+});
 
+b_land.watch(function(err, value){
+    if (value === 0)
+    {drone.land();}
+});
 
 // Exit the program 
 var quit = function(){

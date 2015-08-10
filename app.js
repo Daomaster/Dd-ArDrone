@@ -21,8 +21,8 @@ var GPIO = require('onoff').Gpio,
     led1 = new GPIO(17,'out'),
     led2 = new GPIO(27,'out'),
     led3 = new GPIO(22,'out'),
-    b_takeoff = new Gpio(14, 'in', 'both'),
-    b_land = new Gpio(15, 'in', 'both'),
+    b_takeoff = new GPIO(14, 'in', 'both'),
+    b_land = new GPIO(15, 'in', 'both'),
     iv;
 
 // Global varibles

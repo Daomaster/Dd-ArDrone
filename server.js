@@ -166,6 +166,7 @@ var climb = function(drone,target)
     console.log("Reached altitude of " + target); 
     getLed(target).writeSync(1);
     io.emit('check',getColor(target));
+    io.emit('music',target);
     return;
    }
    

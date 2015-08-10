@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+<script src="http://192.168.3.100:8080/socket.io/socket.io.js"></script>
+<script>
+	var socket1 = io.connect("http://192.168.3.100:8080");
+	var socket2 = io.connect("http://192.168.3.109:8080");
+
+
+	
+	var dor = new Audio("music/do.wav");
+	var re = new Audio("music/re.wav");
+	var mi = new Audio("music/mi.wav");
+	
+	var bass = new Audio("music/bass.wav");
+	var hit = new Audio("music/hit.wav");
+	var regu = new Audio("music/regu.wav");
+	
+	socket1.on("connect",function(){
+		console.log("Drone1 Connected!");
+	});	
+
+	socket2.on("connect",function(){
+		console.log("Drone2 Connected!");
+	});	
+
+	socket1.on("music", function(data){
+		switch(data){
+			case 100: 
+			console.log('do');
+			dor.play();
+			dor.currentTime=0;
+			break;
+
+			case 120: 
+			console.log('re');
+			re.play();
+			re.currentTime=0;
+			break;
+
+			case 140:
+			console.log('mi');
+			mi.play();
+			mi.currentTime=0;
+			break;
+
+		}
+	});
+
+	socket2.on("music", function(data){
+		switch(data){
+			case 100: 
+			console.log('bass');
+			bass.play();
+			bass.currentTime=0;
+			break;
+
+			case 120: 
+			console.log('regu');
+			regu.play();
+			regu.currentTime=0;
+			break;
+
+			case 140:
+			console.log('hit');
+			hit.play();
+			hit.currentTime=0;
+			break;
+
+		}
+	});
+
+
+</script>
+</body>
+</html>

@@ -310,11 +310,13 @@ button3.watch(function(err, value){
 
 b_takeoff.watch(function(err, value){
     if (value === 0)
+    console.log("Taking Off");
     {drone.takeoff();}
 });
 
 b_land.watch(function(err, value){
     if (value === 0)
+    console.log("Landing");
     {drone.land();}
 });
 

@@ -144,7 +144,7 @@ var userNum = 1;
    }
 
 // Reach to the target altitude 
-var climb = function(drone,target)
+var climb = function(target)
   {
    var current=getaltitude(drone);
 
@@ -282,7 +282,7 @@ button1.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("100cm !");
-  climb(drone,a);
+  climb(a);
   } 
 });
 
@@ -293,7 +293,7 @@ button2.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("120cm !");
-  climb(drone,b);
+  climb(b);
   } 
 });
 
@@ -305,10 +305,16 @@ button3.watch(function(err, value){
   if (value === 0) {
   ledOff();
   console.log("140cm !");
-  climb(drone,c);
+  climb(c);
   }
 });
 
+socket.on('control',data){
+  console.log('Climbing to ' + data);
+  climb(data);
+};
+
+/*
 b_takeoff.watch(function(err, value){
     if (value === 0)
     {
@@ -324,6 +330,7 @@ b_land.watch(function(err, value){
       //drone.land();
     }
 });
+*/
 
 // Exit the program 
 var quit = function(){

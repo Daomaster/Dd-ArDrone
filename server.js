@@ -178,7 +178,7 @@ var climb = function(target)
       console.log("Higher than "+target+"cm...lowering")
       console.log("After: "+ current);
       drone.stop(); 
-      climb(drone,target);  
+      climb(target);  
      }, newTimeout(shift)); 
 
    }
@@ -191,7 +191,7 @@ var climb = function(target)
       console.log("Lower than "+target+"cm...uping")
       console.log("After: "+ current);
       drone.stop();
-      climb(drone,target);  
+      climb(target);  
    }, newTimeout(shift)); 
    }
  }

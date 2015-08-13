@@ -309,10 +309,10 @@ button3.watch(function(err, value){
   }
 });
 
-socket.on('control',data){
+socket.on('control',function(data){
   console.log('Climbing to ' + data);
   climb(data);
-};
+});
 
 /*
 b_takeoff.watch(function(err, value){

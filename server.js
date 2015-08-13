@@ -314,6 +314,27 @@ socket.on('control',function(data){
   climb(data);
 });
 
+socket.on('execute',function(data){
+  switch(data){
+    case 't':
+    drone.takeoff();
+    drone.stop();
+    console.log("Taking Off!");
+    break;
+
+    case 'h':
+    drone.stop();
+    console.log("Stop!");
+    break;
+
+    case 'l':
+    drone.land();
+    console.log("Landing...");
+    break;
+
+  };
+});
+
 /*
 b_takeoff.watch(function(err, value){
     if (value === 0)

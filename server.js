@@ -146,6 +146,7 @@ var userNum = 1;
 // Reach to the target altitude 
 var climb = function(target)
   {
+   ledOff();
    var current=getaltitude(drone);
 
    // Determine the shift
@@ -280,7 +281,6 @@ keypress(process.stdin);
 button1.watch(function(err, value){
 //100cm (98~102)
   if (value === 0) {
-  ledOff();
   console.log("100cm !");
   climb(a);
   } 
@@ -291,7 +291,6 @@ button1.watch(function(err, value){
 button2.watch(function(err, value){
 //  120cm (118~122)
   if (value === 0) {
-  ledOff();
   console.log("120cm !");
   climb(b);
   } 
@@ -303,7 +302,6 @@ button3.watch(function(err, value){
 // 140cm (138~142)
   
   if (value === 0) {
-  ledOff();
   console.log("140cm !");
   climb(c);
   }

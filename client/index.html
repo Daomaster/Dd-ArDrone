@@ -23,10 +23,10 @@
   </head>
   <body>
     <ion-pane>
-      
+
       <ion-content>
-          
-          <script src="http://192.168.3.109:8080/socket.io/socket.io.js">               </script>    
+
+          <script src="http://192.168.3.109:8080/socket.io/socket.io.js">               </script>
       <script>
           var socket = io.connect("http://192.168.3.109:8080");
           socket.on("connect", function(){
@@ -34,42 +34,42 @@
               document.body.style.background = "#7A378B";
               //Changes the client screen color to purple.
 
-          });  
-          
+          });
+
           socket.on("check", function(color){
               document.body.style.background=color;
               console.log(color);
           });
-          
+
           function command(data){
             socket.emit("control", data);
               console.log("Climbing to " + data);
           };
-          
+
           function execute(data){
             socket.emit("execute", data);
               console.log("Executing..." + data);
           };
-          
+
           function pull(){
           location.reload();
           console.log("Refreshing");
           };
-      </script>          
+      </script>
           <div class="button-bar">
               <a class="button button-positive" onclick= "execute('t');">Takeoff</a>
               <a class="button button-positive" onclick= "execute('l');">Land</a>
           </div>
-          
+
           <br></br>
           <button name = "targetA" class= "button button-block button-balanced" type= "button" onclick = "command(100);"> 100 cm </button>
           <br></br>
           <button name = "targetB" class= "button button-block button-energized" type= "button" onclick = "command(120);"> 120 cm </button>
           <br></br>
           <button name = "targetC" class= "button button-block button-assertive" type= "button" onclick = "command(140);"> 140 cm </button>
-          <br></br> 
+          <br></br>
           <button name= "refresh" class="button button-block button-stable" onclick ="pull();">Refresh</button>
-    
+
       </ion-content>
     </ion-pane>
   </body>

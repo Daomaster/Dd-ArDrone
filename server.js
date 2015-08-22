@@ -331,23 +331,6 @@ socket.on('execute',function(data){
   };
 });
 
-/*
-b_takeoff.watch(function(err, value){
-    if (value === 0)
-    {
-      console.log("Taking Off");
-      //drone.takeoff();
-    }
-});
-
-b_land.watch(function(err, value){
-    if (value === 0)
-    {
-      console.log("Landing");
-      //drone.land();
-    }
-});
-*/
 
 // Exit the program 
 var quit = function(){

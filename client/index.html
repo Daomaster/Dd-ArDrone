@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+    <ion-pane>
+      
+      <ion-content>
+          
+          <script src="http://192.168.3.109:8080/socket.io/socket.io.js">               </script>    
+      <script>
+          var socket = io.connect("http://192.168.3.109:8080");
+          socket.on("connect", function(){
+              console.log("Connected");
+              document.body.style.background = "#7A378B";
+              //Changes the client screen color to purple.
+
+          });  
+          
+          socket.on("check", function(color){
+              document.body.style.background=color;
+              console.log(color);
+          });
+          
+          function command(data){
+            socket.emit("control", data);
+              console.log("Climbing to " + data);
+          };
+          
+          function execute(data){
+            socket.emit("execute", data);
+              console.log("Executing..." + data);
+          };
+          
+          function pull(){
+          location.reload();
+          console.log("Refreshing");
+          };
+      </script>          
+          <div class="button-bar">
+              <a class="button button-positive" onclick= "execute('t');">Takeoff</a>
+              <a class="button button-positive" onclick= "execute('l');">Land</a>
+          </div>
+          
+          <br></br>
+          <button name = "targetA" class= "button button-block button-balanced" type= "button" onclick = "command(100);"> 100 cm </button>
+          <br></br>
+          <button name = "targetB" class= "button button-block button-energized" type= "button" onclick = "command(120);"> 120 cm </button>
+          <br></br>
+          <button name = "targetC" class= "button button-block button-assertive" type= "button" onclick = "command(140);"> 140 cm </button>
+          <br></br> 
+          <button name= "refresh" class="button button-block button-stable" onclick ="pull();">Refresh</button>
+    
+      </ion-content>
+    </ion-pane>
+  </body>
+</html>
